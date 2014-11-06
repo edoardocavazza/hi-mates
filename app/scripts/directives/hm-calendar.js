@@ -9,19 +9,17 @@
 angular.module('himatesApp')
   .directive('hmCalendar', function () {
     return {
-    	restrict: 'E',
+    	restrict: 'A',
 			scope: {
-				dates: '=calDates'
+				dates: '=hmCalendar'
 			},
-			link: function(scope, element, attrs, ngModel) {
+			link: function(scope, element, attrs) {
 				element.multiDatesPicker({
 					disabled: true,
 					numberOfMonths: 2,
 					minDate: 1,
 					maxDate: 30
 				});
-
-				scope.m = ngModel;
 
 				scope.$watch('dates', function(val) {
 					if (val) {

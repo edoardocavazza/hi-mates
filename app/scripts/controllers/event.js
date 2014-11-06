@@ -225,6 +225,7 @@ angular.module('himatesApp')
 		$scope.userDates = {};
 		$rootScope.loading = true;
 		$scope.data.$loaded(function() {
+			$rootScope.loading = false;
 			if (!$scope.data.users) {
 				$scope.data.users = {};
 			}

@@ -12,9 +12,14 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="bower_components/open-sans-fontface/open-sans.css" />
+    <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/jquery-ui.min.css">
+    <link rel="stylesheet" href="styles/jquery.ui.theme.css">
+    <link rel="stylesheet" href="styles/jquery.ui.theme.font-awesome.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
@@ -27,13 +32,13 @@
     <header class="jumbotron">
       <h1>Hi Mates!<sub><span style="font-size: 18px">[beta]</span></sub></h1>
     </header>
-    <header class="jumbotron only-loading" ng-if="loading==true" ng-show="loading==true">
+    <header class="jumbotron only-loading" ng-if="loading==true || !user || !user.uid">
       <h1>Hi Mates!<sub><span style="font-size: 18px">[beta]</span></sub></h1>
       <section layout="vertical" layout-sm="horizontal" layout-align="center center" ng-if="!user || !user.uid">
         <md-button ng-repeat="auth in authServices" class="md-fab login-button animate-repeat" ng-class="auth.name" ng-click="login(auth.name)" aria-label="Login with {{ auth.name }}"></md-button>
       </section>
     </header>
-    <div ng-if="user && user.uid" ng-controller="MainCtrl" class="wrapper">
+    <div ng-if="user && user.uid" ng-controller="EventCtrl" class="wrapper">
       <h2>
         <div class="avatar-crop">
           <img title="{{ getRealName() }}" draggable="false" ng-src="{{ getAvatar() }}" />
@@ -48,7 +53,7 @@
               I will not take part
             </md-checkbox>
           </p>
-          <hm-user-calendar ng-model="user" hm-disabled="user.rejected"></hm-user-calendar>
+          <div hm-user-calendar="user" hm-disabled="user.rejected"></div>
           <md-radio-group class="anim-fadeIn" ng-if="currentDateModel" ng-model="currentDateModel.time">
             <md-radio-button value="day" aria-label="All day long">All day long</md-radio-button>
             <md-radio-button value="morning"  aria-label="Just morning">Just morning</md-radio-button>
@@ -65,7 +70,7 @@
           {{ getRejectedNumber() }} will not take part.
         </p>
         <div id="preferences-cals">
-          <hm-calendar cal-dates="preferredDays"></hm-calendar>
+          <div hm-calendar="preferredDays"></div>
         </div>
         <h3>Subscriptions</h3>
         <p ng-if="!hasSubscriptions(allSelectedDays)">
