@@ -1,0 +1,504 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #FFF;
+	overflow: auto;
+}
+
+body.loading {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+h1, h2, h3 {
+	font-family: 'Open Sans';
+	font-weight: lighter !important;
+}
+
+h2 {
+	font-size: 28px !important;
+	color: #0052FF;
+}
+
+.logout {
+	color: #0052FF;
+	font-size: 16px !important;
+	vertical-align: baseline;
+	text-decoration: none;
+}
+
+h3 {
+	font-size: 24px !important;
+	color: #0052FF;
+}
+
+img {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
+	user-drag: none;
+}
+
+header {
+	display: inline-block;
+	width: 100%;
+	padding: 0 20px;
+	height: 300px;
+	line-height: 110px;
+	font-size: 38px;
+	background-color: #FFF;
+}
+
+header.only-loading {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2000;
+}
+
+header.only-loading.ng-hide, header.only-loading.ng-leave {
+	animation: fadeOut 500ms;
+	-webkit-animation: fadeOut 500ms;
+}
+
+header > *{
+	position: relative;
+	z-index: 2;
+}
+
+footer {
+	width: 100%;
+	min-height: 100px;
+	padding: 20px;
+	border-top: solid 1px #CCC;
+	background-color: #e5e5e5;
+	color: #444;
+}
+
+footer img {
+	display: inline-block;
+	height: 50px;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+footer img:hover {
+	animation: tada 1s;
+	-webkit-animation: tada 1s;
+}
+
+nav.filters A {
+	color: inherit;
+	text-decoration: none;
+}
+
+nav.filters A.on {
+	font-weight: bold;
+}
+
+md-button.login-button {
+	opacity: 1;
+	margin-right: 20px;
+}
+
+md-button.login-button.ng-enter {
+	opacity: 0;
+	-webkit-animation-name: fadeInUp;
+	animation-name: fadeInUp;
+	-webkit-animation-duration: 500ms;
+	animation-duration: 500ms;
+}
+
+md-button.login-button.ng-leave {
+	opacity: 0;
+	-webkit-animation-name: fadeOutDown;
+	animation-name: fadeOutDown;
+	-webkit-animation-duration: 250ms;
+	animation-duration: 250ms;
+}
+
+md-button.login-button + md-button.login-button {
+	-webkit-animation-delay: 500ms;
+    animation-delay: 500ms;
+}
+
+md-button.login-button + md-button.login-button + md-button.login-button {
+	-webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+
+md-button.login-button + md-button.login-button + md-button.login-button + md-button.login-button {
+	-webkit-animation-delay: 1500ms;
+    animation-delay: 1500ms;
+}
+
+md-radio-group.md-default-theme:focus {
+	border: 1px dotted transparent;
+}
+
+md-checkbox .md-label {
+	border: solid 1px transparent !important;
+}
+
+.login-button.facebook {
+	background-image: url('../images/icons.png');
+	background-size: 245px;
+	background-position: -126px -1px;
+	background-repeat: no-repeat;
+}
+
+.login-button.google {
+	background-image: url('../images/icons.png');
+	background-size: 245px;
+	background-position: -63px -64px;
+	background-repeat: no-repeat;
+}
+
+.login-button.twitter {
+	background-image: url('../images/icons.png');
+	background-size: 245px;
+	background-position: -1px -187px;
+	background-repeat: no-repeat;
+}
+
+.login-button.github {
+	background-image: url('../images/icons.png');
+	background-size: 245px;
+	background-position: -1px -64px;
+	background-repeat: no-repeat;
+}
+
+.wrapper {
+	width: 100%;
+	display: block;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 20px 20px 70px 20px;
+	border-radius: 0px;
+	background: #FFF;
+	position: relative;
+	z-index: 1;
+}
+
+#view, #users {
+	display: inline-block;
+	vertical-align: top;
+	width: 66%;
+	margin-right: 0;
+}
+
+#users {
+	width: 33%;
+	padding-right: 2%;
+}
+
+.morning {
+	border-left: solid 2px red;
+	padding-left: 20px;
+}
+
+.afternoon {
+	border-left: solid 2px rgb(107, 107, 255);
+	padding-left: 20px;
+}
+
+.user-options {
+	max-height: 350px;
+}
+
+.user-options > *:last-child {
+	margin-bottom: 30px;
+}
+
+.anim-slide {
+	transition: max-height 500ms;
+	-webkit-transition: max-height 500ms;
+}
+
+.anim-slide.ng-enter, .anim-slide.ng-remove-active {
+	max-height: 300px;
+}
+
+.anim-slide.ng-leave, .anim-slide.ng-hide {
+	max-height: 0px;
+}
+
+.anim-zoomIn.ng-show, .anim-zoomIn.ng-enter {
+	animation: zoomIn 500ms;
+	-webkit-animation: zoomIn 500ms;
+}
+
+.anim-zoomIn.ng-leave, .anim-zoomIn.ng-hide {
+	animation: zoomOut 500ms;
+	-webkit-animation: zoomOut 500ms;
+}
+
+.anim-fadeInDown.ng-show, .anim-fadeInDown.ng-enter {
+	animation: fadeInDown 500ms;
+	-webkit-animation: fadeInDown 500ms;
+}
+
+.anim-fadeInDown.ng-leave, .anim-fadeInDown.ng-hide {
+	animation: fadeOutUp 500ms;
+	-webkit-animation: fadeOutUp 500ms;
+}
+
+.anim-fadeIn.ng-show, .anim-fadeIn.ng-enter {
+	animation: fadeIn 500ms;
+	-webkit-animation: fadeIn 500ms;
+	opacity: 0;
+}
+
+.anim-fadeIn.ng-leave, .anim-fadeIn.ng-hide {
+	animation: fadeOut 500ms;
+	-webkit-animation: fadeOut 500ms;
+}
+
+.avatar-crop {
+	width: 80px;
+	height: 80px;
+	border-radius: 100%;
+	-webkit-border-radius: 100%;
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 10px 10px 0 0;
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+}
+
+h2 > .avatar-crop {
+	margin: 0;
+}
+
+.date {
+	font-weight: bold;
+	display: inline-block;
+}
+
+.date:after {
+	content: attr(data-number);
+	display: inline-block;
+	min-width: 20px;
+	padding: 0 4px;
+	height: 20px;
+	background: #C7FFB5;
+	text-align: center;
+	border-radius: 4px;
+	margin-left: 10px;
+	font-weight: normal;
+}
+
+.per-date {
+	margin-top: 30px;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.per-date:first-child {
+	margin-top: 0px;
+}
+
+.avatar-crop {
+	position: relative;
+}
+
+.avatar-crop img {
+	position: absolute;
+	top: -1000px;
+	bottom: -1000px;
+	left: -1000px;
+	right: -1000px;
+	margin: auto;
+}
+
+.avatar-crop img.landscape {
+	height: 100%;
+}
+
+.avatar-crop img.portrait {
+	width: 100%;
+}
+
+.user-calendar {
+	max-height: 300px;
+	width: 100%;
+	margin-bottom: 20px
+}
+
+.user-calendar[disabled] {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.ui-datepicker {
+	width: 100%;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+#preferences-cals {
+	overflow:hidden;
+}
+
+#preferences-cals > * + * .ui-widget-content{
+	border-left: none
+}
+
+.ui-datepicker {
+	width: 100% !important; 
+}
+
+.ui-datepicker td .ui-state-active {
+	background: transparent;
+	color: #555;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+	border: 1px solid #A9CE9E;
+	background: #C7FFB5;
+	color: #313131;
+	opacity: 1;
+}
+
+.ui-datepicker-current-day.ui-state-highlight:not(.ui-state-disabled)  {
+	position: relative;
+	z-index: 1;
+	box-shadow: 0 0 0px 2px #0052FF;
+}
+
+.ui-datepicker .ui-widget-header {
+	height: 45px;
+}
+
+.ui-datepicker .ui-datepicker-title {
+	margin-top: 8px;
+}
+
+.ui-datepicker .ui-datepicker-prev.ui-state-disabled,
+.ui-datepicker .ui-datepicker-next.ui-state-disabled {
+	display: none;
+}
+
+.angular-google-map-container { 
+	height: 400px; 
+}
+
+.jumbotron {
+	position: relative;
+	padding: 40px 0;
+	color: #fff;
+	text-align: center;
+	text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+	background-image: url('../images/header.png');
+	background-attachment: fixed;
+}
+
+.jumbotron img {
+	height: 1em;
+	vertical-align: baseline;
+}
+
+.jumbotron:after {
+	display: block;
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.75;
+	background: -moz-linear-gradient(45deg, #020031 0%, #6d3353 100%);
+	background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#020031), color-stop(100%,#6d3353));
+	background: -webkit-linear-gradient(45deg, #020031 0%,#6d3353 100%);
+	background: -o-linear-gradient(45deg, #020031 0%,#6d3353 100%);
+	background: -ms-linear-gradient(45deg, #020031 0%,#6d3353 100%);
+	background: linear-gradient(45deg, #020031 0%,#6d3353 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#020031', endColorstr='#6d3353',GradientType=1 );
+	-webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+	-moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+	box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+}
+
+@media screen and (max-width:960px) {
+
+	#view {
+		width: 100%;
+		padding-right: 0%;
+	}
+
+	#users {
+		width: 100%;
+	
+		padding-right: 0%;
+}
+
+}
+
+@media screen and (max-width:640px) {
+
+	header {
+		height: 150px;
+		font-size: 16px;
+		line-height: 15px;
+	}
+
+	h2 {
+		font-size: 24px !important;
+		text-align: center;
+		display: block;
+	}
+
+	h3 {
+		font-size: 20px !important;
+	}
+
+	h2 > .avatar-crop {
+		display: block;
+		margin: 0 auto;
+	}
+	
+	.per-date td{
+		display: block;
+		width: 100%;
+	}
+	
+	#preferences-cals .ui-datepicker, .ui-datepicker-multi-2 .ui-datepicker-group {
+		width: 100%
+	}
+
+	.angular-google-map-container { 
+		height: 200px; 
+	}
+
+	.anim-slide {
+		transition: none;
+		-webkit-transition: none;
+	}
+
+	.anim-slide.ng-enter, .anim-slide.ng-remove-active {
+		display: block;
+	}
+
+	.anim-slide.ng-leave, .anim-slide.ng-hide {
+		display: none;
+	}
+
+	.filters > span {
+		display: block;
+	}
+
+	footer img {
+		height: 30px;
+	}
+
+}
