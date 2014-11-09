@@ -1,0 +1,64 @@
+<section ng-controller="EventCtrl" class="event">
+  go back to <a ui-sref="dashboard">Dashboard</a>.<br />
+  <div id="users">
+    <h3>Fill your dates</h3>
+    <material-content >
+      <p>
+        <md-checkbox ng-model="user.rejected" aria-label="Reject">
+          I will not take part
+        </md-checkbox>
+      </p>
+      <div hm-user-calendar="user" hm-disabled="user.rejected"></div>
+      <md-radio-group class="anim-fadeIn" ng-if="currentDateModel" ng-model="currentDateModel.time">
+        <md-radio-button value="day" aria-label="All day long">All day long</md-radio-button>
+        <md-radio-button value="morning"  aria-label="Just morning">Just morning</md-radio-button>
+        <md-radio-button value="afternoon" aria-label="Just afternoon">Just afternoon</md-radio-button>
+      </md-radio-group>
+    </material-content>
+  </div>
+  <div id="view">
+    <h3>Overview</h3>
+    <p>
+      {{ getPreferencesNumber() }} subscribed.
+    </p>
+    <p ng-if="getRejectedNumber() == 1">
+      {{ getRejectedNumber() }} will not take part.
+    </p>
+    <div id="preferences-cals">
+      <div hm-calendar="preferredDays"></div>
+    </div>
+    <h3>Subscriptions</h3>
+    <p ng-if="!hasSubscriptions(allSelectedDays)">
+      No subscriptions yet :(
+    </p>
+    <nav class="filters" ng-if="hasSubscriptions(allSelectedDays)">
+      <span>Order by: </span>
+      <a href="javascript:void(0)" ng-class="{ 'on': filter == 'date' }" ng-click="setFilter('date')">date</a> - 
+      <a href="javascript:void(0)" ng-class="{ 'on': filter == 'day' }" ng-click="setFilter('day')">best day</a> - 
+      <a href="javascript:void(0)" ng-class="{ 'on': filter == 'partial' }" ng-click="setFilter('partial')">morning/afternoon</a>
+    </nav>
+    <table class="per-date" ng-if="hasSubscriptions(allSelectedDays)">
+      <thead>
+        <td class="morning">Morning</td>
+        <td class="afternoon">Afternoon</td>
+      </thead>
+    </table>
+    <table class="per-date anim-zoomIn" ng-repeat="d in allSelectedDays | orderFilter:filter">
+      <caption class="date" data-number="{{ d.length }}">{{ valToDate(d.date) }}</caption>
+      <tbody>
+        <tr>
+          <td class="morning">
+            <div ng-repeat="userData in d.users" class="avatar-crop anim-zoomIn" ng-if="userData.time == 'morning' || userData.time == 'day'">
+              <img title="{{ getRealName(userData.user) }}" draggable="false" ng-src="{{ getAvatar(userData.user) }}" />
+            </div>
+          </td>
+          <td class="afternoon">
+            <div ng-repeat="userData in d.users" class="avatar-crop anim-zoomIn" ng-if="userData.time == 'afternoon' || userData.time == 'day'">
+              <img title="{{ getRealName(userData.user) }}" draggable="false" ng-src="{{ getAvatar(userData.user) }}" />
+            </div>
+          </td>
+            </tr>
+          </tbody>
+    </table>
+  </div>
+</section>

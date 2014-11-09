@@ -18,7 +18,12 @@ h1, h2, h3 {
 
 h2 {
 	font-size: 28px !important;
-	color: #0052FF;
+	color: #666;
+}
+
+.login h2 {
+	text-align: center;
+	margin-bottom: 30px;
 }
 
 .logout {
@@ -59,17 +64,12 @@ header {
 	position: fixed;
 	z-index: 2000;
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDAwMDAwIiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjE0Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
-	background: -moz-linear-gradient(-45deg,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.14) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.14))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(-45deg,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.14) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(-45deg,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.14) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(-45deg,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.14) 100%); /* IE10+ */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDAwMDAwIiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjE0Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=); /* FF3.6+ */ /* Chrome,Safari4+ */ /* Chrome10+,Safari5.1+ */ /* Opera 11.10+ */ /* IE10+ */
 	background: linear-gradient(135deg,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.14) 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#24000000',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
 	background-color: #009688;
-	transition: min-height 500ms;
-	-webkit-transition: min-height 500ms;
+	transition: min-height 500ms ease-out;
+	-webkit-transition: min-height 500ms ease-out;
 }
 
 header:before {
@@ -85,8 +85,8 @@ header:before {
 	height: 100%;
 	animation: header 1s ease-out;
 	-webkit-animation: header 1s ease-out;
-	transition: background 500ms;
-	-webkit-transition: background 500ms;
+	transition: background 500ms ease-out;
+	-webkit-transition: background 500ms ease-out;
 }
 
 @-webkit-keyframes header {
@@ -112,21 +112,27 @@ header:before {
 
 @keyframes header {
     0% {
+    	-webkit-transform: scaleX(0.001);
     	transform: scaleX(0.001);
     }
     20% {
+    	-webkit-transform: scaleX(1.2);
     	transform: scaleX(1.2);
     }
     40% {
+    	-webkit-transform: scaleX(0.75);
     	transform: scaleX(0.75);
     }
     60% {
+    	-webkit-transform: scaleX(1.1);
     	transform: scaleX(1.1);
     }
     80% {
+    	-webkit-transform: scaleX(0.9);
     	transform: scaleX(0.9);
     }
     100% {
+    	-webkit-transform: scaleX(1);
     	transform: scaleX(1);
     }
 }
@@ -169,11 +175,17 @@ header > *{
 
 footer {
 	width: 100%;
-	min-height: 100px;
+	min-height: 150px;
 	padding: 20px;
 	border-top: solid 1px #CCC;
 	background-color: #e5e5e5;
 	color: #444;
+	position: relative;
+	margin-top: -150px;
+}
+
+footer p {
+	margin: 0;
 }
 
 footer img {
@@ -271,14 +283,14 @@ md-checkbox .md-label {
 
 .wrapper {
 	width: 100%;
+	min-height: 100%;
 	display: block;
 	max-width: 1280px;
 	margin: 0 auto;
-	padding: 70px 20px 70px 20px;
+	padding: 70px 20px 180px 20px;
 	border-radius: 0px;
 	background: #FFF;
 	position: relative;
-	z-index: 1;
 }
 
 #view, #users {

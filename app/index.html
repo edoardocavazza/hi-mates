@@ -2,7 +2,7 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Hi Mates!</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,79 +31,8 @@
     <!-- Add your site or application content here -->
     <header>
       <h1>Hi Mates!<sub><span style="font-size: 18px">[beta]</span></sub></h1>
-      <section layout="vertical" layout-sm="horizontal" layout-align="center center" ng-if="!user || !user.uid">
-        <md-button ng-repeat="auth in authServices" class="md-fab login-button animate-repeat" ng-class="auth.name" ng-click="login(auth.name)" aria-label="Login with {{ auth.name }}"></md-button>
-      </section>
     </header>
-    <div ng-if="user && user.uid" ng-controller="EventCtrl" class="wrapper">
-      <h2>
-        <div class="avatar-crop">
-          <img title="{{ getRealName() }}" draggable="false" ng-src="{{ getAvatar() }}" />
-        </div>
-        Hello, {{ getRealName() }}
-      </h2>
-      <div id="users">
-        <h3>Fill your dates</h3>
-        <material-content >
-          <p>
-            <md-checkbox ng-model="user.rejected" aria-label="Reject">
-              I will not take part
-            </md-checkbox>
-          </p>
-          <div hm-user-calendar="user" hm-disabled="user.rejected"></div>
-          <md-radio-group class="anim-fadeIn" ng-if="currentDateModel" ng-model="currentDateModel.time">
-            <md-radio-button value="day" aria-label="All day long">All day long</md-radio-button>
-            <md-radio-button value="morning"  aria-label="Just morning">Just morning</md-radio-button>
-            <md-radio-button value="afternoon" aria-label="Just afternoon">Just afternoon</md-radio-button>
-          </md-radio-group>
-        </material-content>
-      </div>
-      <div id="view">
-        <h3>Overview</h3>
-        <p>
-          {{ getPreferencesNumber() }} subscribed.
-        </p>
-        <p ng-if="getRejectedNumber() == 1">
-          {{ getRejectedNumber() }} will not take part.
-        </p>
-        <div id="preferences-cals">
-          <div hm-calendar="preferredDays"></div>
-        </div>
-        <h3>Subscriptions</h3>
-        <p ng-if="!hasSubscriptions(allSelectedDays)">
-          No subscriptions yet :(
-        </p>
-        <nav class="filters" ng-if="hasSubscriptions(allSelectedDays)">
-          <span>Order by: </span>
-          <a href="javascript:void(0)" ng-class="{ 'on': filter == 'date' }" ng-click="setFilter('date')">date</a> - 
-          <a href="javascript:void(0)" ng-class="{ 'on': filter == 'day' }" ng-click="setFilter('day')">best day</a> - 
-          <a href="javascript:void(0)" ng-class="{ 'on': filter == 'partial' }" ng-click="setFilter('partial')">morning/afternoon</a>
-        </nav>
-        <table class="per-date" ng-if="hasSubscriptions(allSelectedDays)">
-          <thead>
-            <td class="morning">Morning</td>
-            <td class="afternoon">Afternoon</td>
-          </thead>
-        </table>
-        <table class="per-date anim-zoomIn" ng-repeat="d in allSelectedDays | orderFilter:filter">
-          <caption class="date" data-number="{{ d.length }}">{{ valToDate(d.date) }}</caption>
-          <tbody>
-            <tr>
-              <td class="morning">
-                <div ng-repeat="userData in d.users" class="avatar-crop anim-zoomIn" ng-if="userData.time == 'morning' || userData.time == 'day'">
-                  <img title="{{ getRealName(userData.user) }}" draggable="false" ng-src="{{ getAvatar(userData.user) }}" />
-                </div>
-              </td>
-              <td class="afternoon">
-                <div ng-repeat="userData in d.users" class="avatar-crop anim-zoomIn" ng-if="userData.time == 'afternoon' || userData.time == 'day'">
-                  <img title="{{ getRealName(userData.user) }}" draggable="false" ng-src="{{ getAvatar(userData.user) }}" />
-                </div>
-              </td>
-                </tr>
-              </tbody>
-        </table>
-      </div>
-    </div>
+    <div class="wrapper" ui-view></div>
     <footer>
       <p>
         &copy; An interactive web app for organize group activities.<br /><br />
@@ -116,8 +45,6 @@
         <a href="http://jqueryui.com" target="_blank"><img src="images/logos/jqueryui.svg" alt="jQuery UI logo" /></a>
       </p>
     </footer>
-
-
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -155,6 +82,7 @@
     <script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
     <script src="bower_components/mockfirebase/dist/mockfirebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <!-- endbower -->
     <script src="scripts/libs/lodash.underscore.min.js"></script>
     <script src="scripts/libs/jquery-ui.multidatespicker.js"></script>
@@ -167,6 +95,8 @@
         <script src="scripts/directives/hm-calendar.js"></script>
         <script src="scripts/directives/hm-user-calendar.js"></script>
         <script src="scripts/filters/orderfilter.js"></script>
+        <script src="scripts/services/auth.js"></script>
+        <script src="scripts/controllers/login.js"></script>
         <!-- endbuild -->
 </body>
 </html>
