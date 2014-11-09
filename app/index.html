@@ -29,10 +29,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <header class="jumbotron">
-      <h1>Hi Mates!<sub><span style="font-size: 18px">[beta]</span></sub></h1>
-    </header>
-    <header class="jumbotron only-loading" ng-if="loading==true || !user || !user.uid">
+    <header>
       <h1>Hi Mates!<sub><span style="font-size: 18px">[beta]</span></sub></h1>
       <section layout="vertical" layout-sm="horizontal" layout-align="center center" ng-if="!user || !user.uid">
         <md-button ng-repeat="auth in authServices" class="md-fab login-button animate-repeat" ng-class="auth.name" ng-click="login(auth.name)" aria-label="Login with {{ auth.name }}"></md-button>
