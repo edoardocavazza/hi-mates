@@ -460,8 +460,8 @@ h2 > .avatar-crop {
 	left: -1000px;
 	right: -1000px;
 	margin: auto;
-	max-width: 80px;
-	max-height: 80px;
+	min-width: 80px;
+	min-height: 80px;
 }
 
 .avatar-crop img.landscape {

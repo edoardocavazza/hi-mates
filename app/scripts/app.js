@@ -36,7 +36,10 @@ angular
       })
       .state('profile', {
         url: '/profile',
-        templateUrl: 'partials/profile.html'
+        templateUrl: 'partials/profile.html',
+        data: {
+          authenticate: true
+        }
       })
       .state('event', {
         url: '/event',
