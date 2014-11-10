@@ -1,0 +1,11 @@
+<section class="profile">
+	<h2 ng-include="'partials/user-card.html'"></h2>
+	<h3>Linked profile:</h3>
+	<div ng-controller="LoginCtrl" layout="vertical" layout-sm="horizontal" layout-align="left center">
+	  <md-button ng-repeat="auth in loggedService" class="md-fab login-button animate-repeat" ng-class="auth.name" ng-click="logout(auth.name)" aria-label="Logout from {{ auth.name }}"></md-button>
+	</div>
+	<h3>Add a profile!</h3>
+	<div ng-controller="LoginCtrl" layout="vertical" layout-sm="horizontal" layout-align="left center">
+	  <md-button ng-repeat="auth in authServices" class="md-fab login-button animate-repeat" ng-class="auth.name" ng-click="login(auth.name)" aria-label="Login with {{ auth.name }}"></md-button>
+	</div>
+</section>

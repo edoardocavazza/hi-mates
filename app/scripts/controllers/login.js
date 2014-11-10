@@ -10,19 +10,45 @@
 angular.module('himatesApp')
   .controller('LoginCtrl', function ($scope, $rootScope, $http, $timeout, $q, $firebase, Auth) {
     $scope.authServices = [];
+    $scope.loggedService = [];
     $timeout(function() {
-      $scope.authServices.push({
+      var user = Auth.getUser();
+      if (!user || !user.facebook) {
+        $scope.authServices.push({
+            name: 'facebook'
+          });
+      } else {
+        $scope.loggedService.push({
           name: 'facebook'
-        });
-      $scope.authServices.push({
+        })
+      }
+      if (!user || !user.google) {
+        $scope.authServices.push({
           name: 'google'
         });
-      $scope.authServices.push({
+      } else {
+        $scope.loggedService.push({
+          name: 'google'
+        })
+      }
+      if (!user || !user.twitter) {
+        $scope.authServices.push({
           name: 'twitter'
         });
-      $scope.authServices.push({
+      } else {
+        $scope.loggedService.push({
+          name:'twitter'
+        })
+      }
+      if (!user || !user.github) {
+        $scope.authServices.push({
           name: 'github'
         });
+      } else {
+        $scope.loggedService.push({
+          name: 'github'
+        })
+      }
     }, 2000);
 
     $scope.login = function(provider) {

@@ -61,6 +61,9 @@ angular.module('himatesApp')
       },
       isLogged: function() {
         return user ? true : false;
-      } 
+      },
+      getUser: function() {
+        return user;
+      }
     };
   });

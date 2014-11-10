@@ -1,9 +1,4 @@
 <section class="dashboard">
-	<h2>
-    <div class="avatar-crop">
-      <img title="{{ getRealName() }}" draggable="false" ng-src="{{ getAvatar() }}" />
-    </div>
-    Hello, {{ getRealName() }}
-  </h2>
+	<h2 ng-include="'partials/user-card.html'"></h2>
 	go to the <a ui-sref="event">event sample page</a>.
 </section>

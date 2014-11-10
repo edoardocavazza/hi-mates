@@ -34,6 +34,10 @@ angular
         url: '/login',
         templateUrl: 'partials/login.html'
       })
+      .state('profile', {
+        url: '/profile',
+        templateUrl: 'partials/profile.html'
+      })
       .state('event', {
         url: '/event',
         templateUrl: 'partials/event.html',
@@ -44,8 +48,12 @@ angular
   })
   .run(function($rootScope, $state, $timeout, Auth) {
     $rootScope.loading = true;
+    $rootScope.showButtons = false;
     $timeout(function() {
       $rootScope.loading = false;
+      $timeout(function() {
+        $rootScope.showButtons = true;
+      }, 1000);
     }, 2000);
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -97,5 +105,5 @@ angular
         return user.google.cachedUserProfile.picture;
       }
     }
-    
+
   });

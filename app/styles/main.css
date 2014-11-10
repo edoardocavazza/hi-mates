@@ -173,6 +173,29 @@ header > *{
 	z-index: 2;
 }
 
+header nav {
+	text-align: left;
+	padding: 0px 10px;
+	line-height: 28px;
+	position: absolute;
+	left: 0px;
+	max-width: 1280px;
+	width: 100%;
+	right: 0;
+	margin: auto;
+	font-size: 0.8em;
+}
+
+header nav md-button{
+	height: 40px;
+	margin-top: 5px;
+}
+
+header nav md-button.md-default-theme:not([disabled]):hover,
+header nav md-button.md-default-theme:not([disabled]).focus {
+	background: rgba(0,0,0,0.1);
+}
+
 footer {
 	width: 100%;
 	min-height: 150px;
@@ -328,12 +351,26 @@ md-checkbox .md-label {
 	-webkit-transition: max-height 500ms;
 }
 
+.anim-slide-right {
+	transition: max-width 500ms;
+	-webkit-transition: max-width 500ms;
+	overflow: hidden;
+}
+
 .anim-slide.ng-enter, .anim-slide.ng-remove-active {
 	max-height: 300px;
 }
 
 .anim-slide.ng-leave, .anim-slide.ng-hide {
 	max-height: 0px;
+}
+
+.anim-slide-right.ng-enter, .anim-slide-right.ng-remove-active {
+	max-width: 300px;
+}
+
+.anim-slide-right.ng-leave, .anim-slide-right.ng-hide {
+	max-width: 0px;
 }
 
 .anim-zoomIn.ng-show, .anim-zoomIn.ng-enter {
@@ -370,8 +407,8 @@ md-checkbox .md-label {
 .avatar-crop {
 	width: 80px;
 	height: 80px;
-	border-radius: 100%;
-	-webkit-border-radius: 100%;
+	border-radius: 100% !important;
+	-webkit-border-radius: 100% !important;
 	overflow: hidden;
 	display: inline-block;
 	vertical-align: middle;
