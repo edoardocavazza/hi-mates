@@ -1,4 +1,22 @@
 <section class="dashboard">
 	<h2 ng-include="'partials/user-card.html'"></h2>
 	go to the <a ui-sref="event">event sample page</a>.
+	<h3>Events</h3>
+	<div ng-controller="EventsCtrl">
+		<ul class="events-list">
+			<li class="event-entry" ng-repeat="ev in events">{{ ev.title }}</li>
+		</ul>
+		<div ng-if="events.length == 0">
+			+ C'mon mates, let's go out!
+		</div>
+	</div>
+	<div ng-controller="GroupsCtrl">
+		<h3>Crews</h3>
+		<ul class="groups-list">
+			<li class="group-entry" ng-repeat="group in groups">{{ group.title }}</li>
+		</ul>
+		<div ng-if="groups.length == 0">
+			+ Why so lonely ?!
+		</div>
+	</div>
 </section>
