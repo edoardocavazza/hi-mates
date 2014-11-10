@@ -42,8 +42,22 @@ angular
         }
       })
       .state('event', {
-        url: '/event',
+        abstract: true,
         templateUrl: 'partials/event.html',
+        data: {
+          authenticate: true
+        }
+      })
+      .state('event.create', {
+        url: '/event/new',
+        templateUrl: 'partials/new-event.html',
+        data: {
+          authenticate: true
+        }
+      })
+      .state('event.view', {
+        url: '/event/view',
+        templateUrl: 'partials/view-event.html',
         data: {
           authenticate: true
         }
