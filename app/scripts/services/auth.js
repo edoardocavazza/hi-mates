@@ -9,7 +9,7 @@
  */
 angular.module('himatesApp')
   .factory('Auth', function ($rootScope, $q, $firebase) {
-    var fbUrl = 'https://himates.firebaseio.com/users';
+    var fbUrl = 'https://himates.firebaseio.com/';
     var rootRef = new Firebase(fbUrl);
     var user = $rootScope.user = rootRef.getAuth();
     var callbacks = {};
@@ -47,6 +47,7 @@ angular.module('himatesApp')
       logout: function(provider) {
         var deferred = $q.defer();
         rootRef.offAuth(function(err) {
+          console.log(err);
           if (err) {
             deferred.reject(err);
           }
