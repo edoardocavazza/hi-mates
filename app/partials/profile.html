@@ -1,12 +1,16 @@
 <section class="profile">
 	go back to <a ui-sref="dashboard">Dashboard</a>.<br />
 	<h2 ng-include="'partials/user-card.html'"></h2>
-	<h3>Linked profile:</h3>
-	<div ng-controller="LoginCtrl" layout="vertical" layout-sm="horizontal" layout-align="left center">
-	  <md-button ng-repeat="auth in loggedService" class="md-fab login-button animate-repeat" ng-class="auth.name" aria-label="You are logged with {{ auth.name }}" title="You are logged with {{ auth.name }}"></md-button>
-	</div>
-	<h3>Add a profile!</h3>
-	<div ng-controller="LoginCtrl" layout="vertical" layout-sm="horizontal" layout-align="left center">
-	  <md-button ng-repeat="auth in authServices" class="md-fab login-button animate-repeat" ng-class="auth.name" ng-click="login(auth.name)" aria-label="Login with {{ auth.name }}" title="Login with {{ auth.name }}"></md-button>
+	<div ng-controller="LoginCtrl" >
+		<h3>Linked profile:</h3>
+		<div layout="vertical" layout-sm="horizontal" layout-align="left center">
+		  <md-button ng-repeat="(auth, enabled) in loggedService" ng-if="enabled" class="md-fab login-button" ng-class="auth" ng-click="logoutProvider(auth)" aria-label="You are logged with {{ auth }}" title="You are logged with {{ auth }}"></md-button>
+		</div>
+		<div ng-if="hasAuthServices()">
+			<h3>Add a profile!</h3>
+			<div layout="vertical" layout-sm="horizontal" layout-align="left center">
+			  <md-button ng-repeat="(auth, enabled) in authServices" ng-if="enabled" class="md-fab login-button" ng-class="auth" ng-click="login(auth)" aria-label="Login with {{ auth }}" title="Login with {{ auth }}"></md-button>
+			</div>
+		</div>
 	</div>
 </section>

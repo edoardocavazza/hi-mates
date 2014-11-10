@@ -51,14 +51,30 @@ angular
   })
   .run(function($rootScope, $location, $state, $timeout, Auth) {
     var lastPath = null;
+    var isPreloadTimeEnded = false;
+    var isAuthLoaded = false;
     $rootScope.loading = true;
     $rootScope.showButtons = false;
     $timeout(function() {
-      $rootScope.loading = false;
-      $timeout(function() {
-        $rootScope.showButtons = true;
-      }, 1000);
+      isPreloadTimeEnded = true;
+      if (isAuthLoaded) {
+        $rootScope.loading = false;
+        $timeout(function() {
+          $rootScope.showButtons = true;
+        }, 1000);
+      }
     }, 2000);
+
+    Auth.$on('loaded', function(user) {
+      $state.transitionTo('dashboard');
+      isAuthLoaded = true;
+      if (isPreloadTimeEnded) {
+        $rootScope.loading = false;
+        $timeout(function() {
+          $rootScope.showButtons = true;
+        }, 1000);
+      }
+    });
 
     Auth.$on('login', function(user, previous) {
       if (!previous) {
@@ -69,6 +85,8 @@ angular
     Auth.$on('logout', function() {
       $state.transitionTo('login');
     });
+
+    Auth.setup();
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (Auth.isLogged() && toState.name == 'login') {
@@ -89,18 +107,18 @@ angular
       if (!user) {
         return '';
       }
-      if (user.twitter) {
-        return user.twitter.displayName;
-      }
-      if (user.github) {
-        return user.github.displayName;
-      }
       if (user.facebook) {
         return user.facebook.displayName;
       }
       if (user.google) {
         return user.google.displayName;
       }
+      if (user.twitter) {
+        return user.twitter.displayName;
+      }
+      if (user.github) {
+        return user.github.displayName;
+      }      
     }
 
     $rootScope.getAvatar = function(user) {
@@ -108,17 +126,17 @@ angular
       if (!user) {
         return '';
       }
-      if (user.twitter) {
-        return user.twitter.cachedUserProfile.profile_image_url;
-      }
-      if (user.github) {
-        return user.github.cachedUserProfile.avatar_url;
-      }
       if (user.facebook) {
         return user.facebook.cachedUserProfile.picture.data.url;
       }
+      if (user.twitter) {
+        return user.twitter.cachedUserProfile.profile_image_url;
+      }
       if (user.google) {
         return user.google.cachedUserProfile.picture;
+      }
+      if (user.github) {
+        return user.github.cachedUserProfile.avatar_url;
       }
     }
 

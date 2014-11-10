@@ -178,7 +178,7 @@ header nav {
 	line-height: 28px;
 	position: absolute;
 	left: 0px;
-	max-width: 1280px;
+	max-width: 1024px;
 	width: 100%;
 	right: 0;
 	margin: auto;
@@ -244,7 +244,7 @@ md-button.login-button {
 	margin-right: 20px;
 }
 
-md-button.login-button.ng-enter {
+md-button.login-button.ng-enter, md-button.login-button.ng-show {
 	opacity: 0;
 	-webkit-animation-name: fadeInUp;
 	animation-name: fadeInUp;
@@ -252,7 +252,7 @@ md-button.login-button.ng-enter {
 	animation-duration: 500ms;
 }
 
-md-button.login-button.ng-leave {
+md-button.login-button.ng-leave, md-button.login-button.ng-hide {
 	opacity: 0;
 	-webkit-animation-name: fadeOutDown;
 	animation-name: fadeOutDown;
@@ -260,17 +260,17 @@ md-button.login-button.ng-leave {
 	animation-duration: 250ms;
 }
 
-md-button.login-button + md-button.login-button {
+md-button.login-button.animate-repeat + md-button.login-button.animate-repeat {
 	-webkit-animation-delay: 500ms;
     animation-delay: 500ms;
 }
 
-md-button.login-button + md-button.login-button + md-button.login-button {
+md-button.login-button.animate-repeat + md-button.login-button.animate-repeat + md-button.login-button.animate-repeat {
 	-webkit-animation-delay: 1s;
     animation-delay: 1s;
 }
 
-md-button.login-button + md-button.login-button + md-button.login-button + md-button.login-button {
+md-button.login-button.animate-repeat + md-button.login-button.animate-repeat + md-button.login-button.animate-repeat + md-button.login-button.animate-repeat {
 	-webkit-animation-delay: 1500ms;
     animation-delay: 1500ms;
 }
@@ -315,7 +315,7 @@ md-checkbox .md-label {
 	width: 100%;
 	min-height: 100%;
 	display: block;
-	max-width: 1280px;
+	max-width: 1024px;
 	margin: 0 auto;
 	padding: 70px 20px 180px 20px;
 	border-radius: 0px;
@@ -467,8 +467,19 @@ h2 > .avatar-crop {
 	left: -1000px;
 	right: -1000px;
 	margin: auto;
-	min-width: 80px;
-	min-height: 80px;
+}
+
+.avatar-crop img.square {
+	width: 100%;
+	height: 100%;
+}
+
+.avatar-crop img.landscape {
+	height: 100%;
+}
+
+.avatar-crop img.portrait {
+	width: 100%;
 }
 
 .avatar-crop img.landscape {

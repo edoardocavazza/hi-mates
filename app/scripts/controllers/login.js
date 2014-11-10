@@ -9,51 +9,52 @@
  */
 angular.module('himatesApp')
   .controller('LoginCtrl', function ($scope, $rootScope, $http, $timeout, $q, $firebase, Auth) {
-    $scope.authServices = [];
-    $scope.loggedService = [];
-    var user = Auth.getUser();
-    if (!user || !user.facebook) {
-      $scope.authServices.push({
-          name: 'facebook'
-        });
-    } else {
-      $scope.loggedService.push({
-        name: 'facebook'
-      })
+    var services = ['facebook', 'google', 'twitter'/*, 'github'*/];
+    $scope.authServices = {};
+    $scope.loggedService = {};
+    
+    var updateServices = function(user) {
+      for (var k in services) {
+        var s = services[k];
+        if (!user || !user[s]) {
+          $scope.authServices[s] = true;
+          $scope.loggedService[s] = false;
+        } else {
+          $scope.authServices[s] = false;
+          $scope.loggedService[s] = true;
+        }
+      }
     }
-    if (!user || !user.google) {
-      $scope.authServices.push({
-        name: 'google'
-      });
-    } else {
-      $scope.loggedService.push({
-        name: 'google'
-      })
+
+    $scope.hasAuthServices = function() {
+      for (var k in $scope.authServices) {
+        if ($scope.authServices[k]) return true;
+      }
+      return false;
     }
-    if (!user || !user.twitter) {
-      $scope.authServices.push({
-        name: 'twitter'
-      });
-    } else {
-      $scope.loggedService.push({
-        name:'twitter'
-      })
+
+    if (!Auth.isLogged()) {
+      $timeout(function() {
+        updateServices(null);
+      }, 1000);
     }
-    if (!user || !user.github) {
-      $scope.authServices.push({
-        name: 'github'
-      });
-    } else {
-      $scope.loggedService.push({
-        name: 'github'
-      })
-    }
+
+    $rootScope.$watch('user', function(val) {
+      if (val) {
+        updateServices(val);
+      }
+    }, true);
 
     $scope.login = function(provider) {
       return Auth.login(provider);
     }
 
-    $scope.logout = function(provider) {
-      return Auth.logout(provider);
+    $scope.logout = function() {
+      return Auth.logout();
     }
+
+    $scope.logoutProvider = function(provider) {
+      Auth.logoutProvider(provider);
+    }
+
   });
