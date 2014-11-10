@@ -49,7 +49,8 @@ angular
         }
       });
   })
-  .run(function($rootScope, $state, $timeout, Auth) {
+  .run(function($rootScope, $location, $state, $timeout, Auth) {
+    var lastPath = null;
     $rootScope.loading = true;
     $rootScope.showButtons = false;
     $timeout(function() {
@@ -59,12 +60,24 @@ angular
       }, 1000);
     }, 2000);
 
+    Auth.$on('login', function(user, previous) {
+      if (!previous) {
+        $state.transitionTo(lastPath ? lastPath.name : 'dashboard');
+      }
+    });
+
+    Auth.$on('logout', function() {
+      $state.transitionTo('login');
+    });
+
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (Auth.isLogged() && toState.name == 'login') {
+        lastPath = null;
         $state.transitionTo('dashboard');
         event.preventDefault();
       }
-      if (toState.data && toState.data.authenticate && !Auth.isLogged()) {
+      if (toState.data && toState.data.authenticate && toState.name != 'login' && !Auth.isLogged()) {
+        lastPath = toState;
         // User isn’t authenticated
         $state.transitionTo('login');
         event.preventDefault();
@@ -107,6 +120,10 @@ angular
       if (user.google) {
         return user.google.cachedUserProfile.picture;
       }
+    }
+
+    $rootScope.logout = function() {
+      return Auth.logout();
     }
 
   });

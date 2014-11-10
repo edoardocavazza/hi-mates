@@ -31,10 +31,13 @@
     <!-- Add your site or application content here -->
     <header>
       <h1>Hi Mates!<sub><span style="font-size: 18px">[beta]</span></sub></h1>
-      <nav>
-        <md-button ng-show="user && user.uid && showButtons" class="fadeInDown" ui-sref="profile" aria-label="Go to your profile page">Profile</md-button>
+      <nav class="nav-left">
         <md-button disabled ng-show="user && user.uid && showButtons" class="fadeInDown" ui-sref="event" aria-label="Create a new event">New Event</md-button>
         <md-button disabled ng-show="user && user.uid && showButtons" class="fadeInDown" ui-sref="groups" aria-label="Go to your groups page">Groups</md-button>
+      </nav>
+      <nav class="nav-right">
+        <md-button ng-show="user && user.uid && showButtons" class="fadeInDown" ui-sref="profile" aria-label="Go to your profile page">Profile</md-button>
+        <md-button ng-show="user && user.uid && showButtons" class="fadeInDown" ng-click="logout()" aria-label="Log out">Log out</md-button>
       </nav>
     </header>
     <div class="wrapper" ui-view></div>

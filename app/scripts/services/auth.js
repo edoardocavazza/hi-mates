@@ -11,7 +11,7 @@ angular.module('himatesApp')
   .factory('Auth', function ($rootScope, $q, $firebase) {
     var fbUrl = 'https://himates.firebaseio.com/';
     var rootRef = new Firebase(fbUrl);
-    var user = $rootScope.user = rootRef.getAuth();
+    $rootScope.user = rootRef.getAuth();
     var callbacks = {};
     var service = this;
 
@@ -23,13 +23,16 @@ angular.module('himatesApp')
         callbacks[evtName] = c;
       },
       $trigger: function(evtName, args) {
+        var service = this;
         var c = callbacks[evtName] || [];
         for (var k in c) {
           var fn = c[k];
-          fn.call(service, args);
+          fn.apply(service, args);
         }
       },
       login: function (provider) {
+        var service = this;
+        var old = $rootScope.user;
         var deferred = $q.defer();
         rootRef.authWithOAuthPopup(provider, function (err, user) {
           if (err) {
@@ -38,6 +41,7 @@ angular.module('himatesApp')
           if (user) {
             $rootScope.$apply(function() {
               $rootScope.user = user;
+              service.$trigger('login', [user, old]);
             });
             deferred.resolve(user);
           }
@@ -45,26 +49,25 @@ angular.module('himatesApp')
         return deferred.promise;
       },
       logout: function(provider) {
+        var service = this;
         var deferred = $q.defer();
         rootRef.offAuth(function(err) {
           console.log(err);
           if (err) {
             deferred.reject(err);
           }
-          if (user) {
-            $rootScope.$apply(function() {
-              $rootScope.user = null;
-            });
-            deferred.resolve(user);
-          }
+          deferred.resolve();
         });
+        $rootScope.user = null;
+        localStorage.removeItem('firebase:session::himates');
+        service.$trigger('logout');
         return deferred.promise;
       },
       isLogged: function() {
-        return user ? true : false;
+        return $rootScope.user ? true : false;
       },
       getUser: function() {
-        return user;
+        return $rootScope.user;
       }
     };
   });

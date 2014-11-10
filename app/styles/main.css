@@ -174,7 +174,6 @@ header > *{
 }
 
 header nav {
-	text-align: left;
 	padding: 0px 10px;
 	line-height: 28px;
 	position: absolute;
@@ -184,6 +183,14 @@ header nav {
 	right: 0;
 	margin: auto;
 	font-size: 0.8em;
+}
+
+header nav.nav-left {
+	text-align: left;
+}
+
+header nav.nav-right {
+	text-align: right;
 }
 
 header nav md-button{
