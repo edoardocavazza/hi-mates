@@ -174,28 +174,27 @@ header > *{
 }
 
 header nav {
-	padding: 0px 10px;
-	line-height: 28px;
+	padding: 0px 20px;
+	line-height: 20px;
 	position: absolute;
-	left: 0px;
-	max-width: 1024px;
-	width: 100%;
-	right: 0;
+	width: auto;
 	margin: auto;
 	font-size: 0.8em;
 }
 
 header nav.nav-left {
 	text-align: left;
+	left: 0;
 }
 
 header nav.nav-right {
 	text-align: right;
+	right: 0;
 }
 
 header nav md-button{
-	height: 40px;
-	margin-top: 5px;
+	height: 50px;
+	margin-top: 0px;
 }
 
 header nav md-button.md-default-theme:not([disabled]):hover,
@@ -215,7 +214,9 @@ footer {
 }
 
 footer p {
-	margin: 0;
+	margin: 0 auto;
+	max-width: 1024px;
+	display: block;
 }
 
 footer img {
@@ -571,7 +572,6 @@ h2 > .avatar-crop {
 @media screen and (max-width:640px) {
 
 	header {
-		height: 150px;
 		font-size: 16px;
 		line-height: 15px;
 	}

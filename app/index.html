@@ -32,6 +32,7 @@
     <header>
       <h1>Hi Mates!<sub><span style="font-size: 18px">[beta]</span></sub></h1>
       <nav class="nav-left">
+        <md-button ng-show="user && user.$id && showButtons" class="fadeInDown" ui-sref="dashboard" aria-label="Home">Home</md-button>
         <md-button disabled ng-show="user && user.$id && showButtons" class="fadeInDown" ui-sref="event" aria-label="Create a new event">New Event</md-button>
         <md-button disabled ng-show="user && user.$id && showButtons" class="fadeInDown" ui-sref="groups" aria-label="Go to your groups page">Groups</md-button>
       </nav>
