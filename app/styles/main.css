@@ -174,27 +174,38 @@ header > *{
 }
 
 header nav {
-	padding: 0px 20px;
-	line-height: 20px;
+	padding: 0 10px;
+	line-height: 10px;
 	position: absolute;
-	width: auto;
+	width: 50%;
+	max-width: 512px;
 	margin: auto;
 	font-size: 0.8em;
 }
 
 header nav.nav-left {
 	text-align: left;
-	left: 0;
+	right: 50%;
 }
 
 header nav.nav-right {
 	text-align: right;
-	right: 0;
+	left: 50%;
 }
 
 header nav md-button{
 	height: 50px;
 	margin-top: 0px;
+	padding: 10px;
+}
+
+ 
+md-button .md-button-inner:empty {
+	display: none;
+}
+
+header nav md-button:before {
+    font-size: 28px;
 }
 
 header nav md-button.md-default-theme:not([disabled]):hover,
