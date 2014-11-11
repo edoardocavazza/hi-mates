@@ -12,14 +12,8 @@ angular.module('himatesApp')
     var fbUrl = 'https://himates.firebaseio.com/';
     var eventRef = new Firebase(fbUrl + 'events/' + $stateParams.eventId);
     var datesRef = eventRef.child('dates');
-    var datesRef = eventRef.child('dates');
     var eventSync = $firebase(eventRef).$asObject();
-    $scope.currentEvent = {
-      id: $stateParams.eventId,
-      title: '',
-      rejected: [],
-      dates: []
-    };
+    $scope.eventDatesAlias = [];
 
     $scope.filter = 'date';
     $scope.preferredDays = [];
@@ -243,8 +237,6 @@ angular.module('himatesApp')
 
     var updateCalendar = function() {
       var dates = eventSync.dates;
-      $scope.currentEvent.title = eventSync.title;
-      $scope.currentEvent.rejected = eventSync.rejected;
       if (dates) {
         var box = {};
         for (var k = 0; k < dates.length; k++) {
@@ -252,19 +244,19 @@ angular.module('himatesApp')
           box[d] = dates[k];
         }
         var deleted = 0;
-        for (var k = 0; k < $scope.currentEvent.dates.length; k++) {
+        for (var k = 0; k < $scope.eventDatesAlias.length; k++) {
           var index = k - deleted;
-          var time = $scope.currentEvent.dates[index].timestamp;
+          var time = $scope.eventDatesAlias[index].timestamp;
           if (!box[time]) {
-            $scope.currentEvent.dates.splice(index, 1);
+            $scope.eventDatesAlias.splice(index, 1);
             deleted += 1;
           } else {
-            $scope.currentEvent.dates[index]['users'] = box[time].users;
+            $scope.eventDatesAlias[index]['users'] = box[time].users;
             delete box[time];
           }
         }
         for (var k in box) {
-          $scope.currentEvent.dates.push(box[k]);
+          $scope.eventDatesAlias.push(box[k]);
         }
 
         var ar = [];
@@ -291,7 +283,7 @@ angular.module('himatesApp')
         }
         $scope.preferredDays = ar;
       } else {
-        $scope.currentEvent.dates = [];
+        $scope.eventDatesAlias = [];
         $scope.preferredDays = [];
       }
     }

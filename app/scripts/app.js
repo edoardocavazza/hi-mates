@@ -50,7 +50,14 @@ angular
       })
       .state('event.create', {
         url: '/event/new',
-        templateUrl: 'partials/events/new.html',
+        templateUrl: 'partials/events/edit.html',
+        data: {
+          authenticate: true
+        }
+      })
+      .state('event.edit', {
+        url: '/event/edit/:eventId',
+        templateUrl: 'partials/events/edit.html',
         data: {
           authenticate: true
         }

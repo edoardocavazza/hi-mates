@@ -1,8 +1,8 @@
 <section ng-controller="EventCtrl" class="event">
   <h2 class="event-title" ng-bind="currentEvent.title"></h2>
   <nav class="event-options">
-    <a href="javascript:void(0)" title="Edit this event" ng-click="editEvent(currentEvent.id, currentEvent.title)">Edit</a> - 
-    <a href="javascript:void(0)" title="Remove this event" ng-click="deleteEvent(currentEvent.id, currentEvent.title)">Remove</a>
+    <a href="javascript:void(0)" title="Edit this event" ng-click="editEvent(currentEvent)">Edit</a> - 
+    <a href="javascript:void(0)" title="Remove this event" ng-click="deleteEvent(currentEvent)">Remove</a>
   </nav><br />
   <div id="users">
     <h3>Fill your dates</h3>
@@ -13,11 +13,6 @@
         </md-checkbox>
       </p>
       <div class="user-calendar" hm-calendar="userDates" hm-calendar-disabled="userRejected"></div>
-      <md-radio-group class="anim-fadeIn" ng-if="currentDateModel" ng-model="currentDateModel.time">
-        <md-radio-button value="day" aria-label="All day long">All day long</md-radio-button>
-        <md-radio-button value="morning"  aria-label="Just morning">Just morning</md-radio-button>
-        <md-radio-button value="afternoon" aria-label="Just afternoon">Just afternoon</md-radio-button>
-      </md-radio-group>
     </material-content>
   </div>
   <div id="view">
@@ -43,7 +38,7 @@
       <a href="javascript:void(0)" ng-class="{ 'on': filter == 'day' }" ng-click="setFilter('day')">best day</a>
     </nav>
     <ul class="no-list">
-      <li class="per-date anim-zoomIn" ng-repeat="d in currentEvent.dates | orderFilter:filter">
+      <li class="per-date anim-zoomIn" ng-repeat="d in eventDatesAlias.dates | orderFilter:filter">
         <h4 class="date" data-number="{{ d.users.length }}">{{ d.date }}</h4>
         <ul class="no-list">
           <li ng-repeat="userData in d.users" class="avatar-crop anim-zoomIn">

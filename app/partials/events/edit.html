@@ -1,0 +1,6 @@
+<md-content ng-controller="EventsCtrl">
+	<form style="padding: 20px;" md-theme="green" ng-submit="saveEvent(currentEvent)">
+	  <md-text-float label="Event title" ng-model="currentEvent.title"></md-text-float>
+	  <md-button aria-label="Edit an Event" class="md-primary" md-theme="green">Save</md-button>
+	</form>
+</md-content>
