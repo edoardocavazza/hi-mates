@@ -8,27 +8,36 @@
  * Controller of the himatesApp
  */
 angular.module('himatesApp')
-  .controller('EventCtrl', function ($scope, $rootScope, $http, $q, $firebase, $timeout) {
-    var fbUrl = 'https://himates.firebaseio.com/users';
-    var rootRef = new Firebase(fbUrl);
-    var sync = $firebase(rootRef);
-    $scope.data = sync.$asObject();
+  .controller('EventCtrl', function ($scope, $rootScope, $http, $q, $firebase, $timeout, $stateParams, Auth) {
+    var fbUrl = 'https://himates.firebaseio.com/';
+    var eventRef = new Firebase(fbUrl + 'events/' + $stateParams.eventId);
+    var datesRef = eventRef.child('dates');
+    var datesRef = eventRef.child('dates');
+    var eventSync = $firebase(eventRef).$asObject();
+    $scope.currentEvent = {
+      title: '',
+      rejected: [],
+      dates: []
+    };
     $scope.filter = 'date';
     $scope.preferredDays = [];
-    $scope.allSelectedDays = {};
+    $scope.usersProfiles = {}
+
+    $scope.getProfile = function(id) {
+      if (!$scope.usersProfiles[id]) {
+        var usersRef = new Firebase(fbUrl + 'users');
+        var requested = usersRef.child(id);
+        var sync = $firebase(requested).$asObject();
+        $scope.usersProfiles[id] = {};
+        sync.$loaded(function() {
+          $scope.usersProfiles[id] = sync;
+        });
+      }
+      return $scope.usersProfiles[id];
+    }
 
     $scope.setFilter = function(f) {
       $scope.filter = f;
-    }
-
-    $scope.hasDates = function(u) {
-      if (u && u.dates && u.dates.length > 0 && !u.rejected) {
-        return 'has-dates';
-      }
-      if (u && u.rejected){
-        return 'rejected';
-      } 
-      return '';
     }
 
     var addZero = function(no) {
@@ -39,7 +48,7 @@ angular.module('himatesApp')
       }
     }
 
-    $scope.valToDate = function(v) {
+    var valToDate = function(v) {
       var d = new Date(parseInt(v));
       var ds  = [
         addZero(d.getDate()),
@@ -49,76 +58,161 @@ angular.module('himatesApp')
       return ds;
     }
 
-    $scope.checkUserTime = function(u, v) {
-      v = parseInt(v);
-      for (var k in u.dates) {
-        var s = new Date(u.dates[k].date);
-        if (s.valueOf() == v && !u.rejected) {
-          return u.dates[k].time;
-        }
-      }
-      return false;
-    }
-
-    $scope.checkUserDate = function(u, v) {
-      v = parseInt(v);
-      for (var k in u.dates) {
-        var s = new Date(u.dates[k].date);
-        if (s.valueOf() == v && !u.rejected) {
-          return true;
-        }
-      }
-      return false;
-    }
-
     $scope.getPreferencesNumber = function() {
       var n = 0;
-      var users = $scope.data.users;
-      for (var k in users) {
-        var u = users[k];
-        if (!u.rejected) {
-          var d = u.dates || [];
-          if (d.length > 0) {
-            n++;
+      if (eventSync && eventSync.dates) {
+        var ar = [];
+        for (var k in eventSync.dates) {
+          var d = eventSync.dates[k];
+          var users = d.users || [];
+          for (var j in users) {
+            var u = users[j];
+            if (ar.indexOf(u) == -1) ar.push(u);
           }
         }
+        n = ar.length;
       }
+
       if (n == 0) {
         return 'Nobody has';
       } else if (n == 1) {
-        return 'Just 1 person has';
+        return 'Just 1 mate has';
       } 
 
-      return n + ' persons have';
+      return n + ' mates have';
     } 
 
     $scope.getRejectedNumber = function() {
       var n = 0;
-      if ($scope.data && $scope.data.users) {
-        for (var k in $scope.data.users) {
-          var u = $scope.data.users[k];
-          if (u.rejected) {
-            n++;
-          }
-        }
+      if (eventSync && eventSync.rejected) {
+        n = eventSync.rejected.length;
       }
+
       if (n == 0) {
         return false;
       } else if (n == 1) {
-        return '1 person';
+        return '1 mate';
       }
-      return n + ' persons';
+      return n + ' mates';
     }
 
     $scope.hasSubscriptions = function(obj) {
-      for (var k in obj) return true;
+      if (eventSync && eventSync.dates && eventSync.dates.length > 0){
+        return true;
+      }
       return false;
     }
 
-    $scope.getNumberArray = function(n) {
-      var ar = [];
-      for (var i = 0; i < n; i++) ar.push(i);
-      return ar;
+    var getUserDates = function() {
+      var user = Auth.getUser();
+      var dates = [];
+      if (eventSync && eventSync.dates) {
+        for (var k in eventSync.dates) {
+          var d = eventSync.dates[k];
+          if (d.users.indexOf(user.$id) != -1) dates.push( new Date(d.timestamp) );
+        }
+      }
+
+      return dates;
+    }
+
+    var indexOfDatesArray = function(date, dates) {
+      var time = date.valueOf();
+      for (var k = 0; k < dates.length; k++) if (dates[k].valueOf() == time) return k;
+      return -1;
+    }
+
+    $scope.userDates = [];
+    $scope.userRejected = false;
+
+    var startWatchUserRejected = function() {
+      var userDatesBeforeReject = [];
+      $scope.$watch('userRejected', function(val, old) {
+        if (val != old) {
+          var user = Auth.getUser();
+          if (val) {
+            if (!old) {
+              userDatesBeforeReject = angular.copy($scope.userDates);
+            }
+            $scope.userDates = [];
+            eventSync.rejected = eventSync.rejected || [];
+            var index = eventSync.rejected.indexOf(user.$id);
+            if (index == -1) {
+              eventSync.rejected.push(user.$id);
+            }
+          } else {
+            if (old && userDatesBeforeReject) {
+              $scope.userDates = userDatesBeforeReject;
+            }
+            eventSync.rejected = eventSync.rejected || [];
+            var index = eventSync.rejected.indexOf(user.$id);
+            if (index >= 0) {
+              if (eventSync.rejected.length > 1) { 
+                eventSync.rejected.slice(index, 1);
+              } else {
+                eventSync.rejected = [];
+              }
+            }
+          }
+          eventSync.$save();
+        }
+      });
+    }
+
+    var startWatchUserDates = function() {
+      $scope.$watch('userDates', function(val, old) {
+        if (val !== old) {
+          var dates = angular.copy(val);
+          var user = Auth.getUser();
+          //console.log('on change:', angular.copy(eventSync.dates), (eventSync.dates || []).length);
+          if (eventSync && eventSync.dates) {
+            var deleted = 0;
+            var length = eventSync.dates.length
+            for (var k = 0; k < length; k++) {
+              var d = new Date(eventSync.dates[k - deleted].timestamp);
+              var userIndexOf = indexOfDatesArray(d, dates);
+              if (userIndexOf == -1) {
+                //user removed this date
+                var users = eventSync.dates[k - deleted].users;
+                var index = users.indexOf(user.$id);
+                if (index >= 0) {
+                  if (users.length > 1) {
+                    eventSync.dates[k - deleted].users.splice(index, 1);
+                  } else {
+                    eventSync.dates.splice(k - deleted, 1);
+                    deleted += 1;
+                  }
+                }
+              } else {
+                dates.splice(userIndexOf, 1);
+                var users = eventSync.dates[k - deleted].users;
+                if (users.indexOf(user.$id) == -1) {
+                  eventSync.dates[k - deleted].users.push(user.$id);
+                }
+              }
+            }
+          }
+          //console.log('removed:', angular.copy(eventSync.dates), (eventSync.dates || []).length);
+          //console.log('try to add:', angular.copy(dates));
+          if (dates.length > 0) {
+            for (var z = 0; z < dates.length; z++) {
+              eventSync.dates = eventSync.dates || [];
+              var d = dates[z];
+              var indexOf = indexOfDatesArray(d, eventSync.dates);
+              if (indexOf == -1) {
+                var str = valToDate(d.valueOf());
+                eventSync.dates.push({
+                  date: str,
+                  timestamp: d.valueOf(),
+                  users: [user.$id]
+                });
+              }
+            }
+          }
+          //console.log('before save:', angular.copy(eventSync.dates), (eventSync.dates || []).length);
+          eventSync.$save();
+        }
+      }, true);
     }
 
     var getTimeModel = function() {
@@ -135,145 +229,78 @@ angular.module('himatesApp')
       $scope.currentDateModel = null;
     }
 
-    var updateCals = function() {
-      var convert = {};
-      var max = 0;
-      var users = $scope.data.users;
-      for (var k in users) {
-        var u = users[k];
-        var d = u.dates || [];
-
-        var datesAr = [];
-        if (!u.rejected) {
-          for (var j in d) {
-            datesAr.push(d[j].date);
-          }
-        } else {
-          d = [];
-        }
-        for (var j in $scope.allSelectedDays) {
-          var key = parseInt($scope.allSelectedDays[j].date);
-          var l = 0;
-          for (var z in $scope.allSelectedDays[j].users) {
-            var data = $scope.allSelectedDays[j].users[z];
-            if (data.user) {
-              if (data.user.uid == u.uid && datesAr.indexOf(key) == -1) {
-                $scope.allSelectedDays[j].length -= 1;
-                delete $scope.allSelectedDays[j].users[z];
-              } else {
-                l++;
-              }
-            }
-          }
-          if (l == 0) {
-            delete $scope.allSelectedDays[j];
-          }
-        }
-        for (var s = 0; s < d.length; s++) {
-          var v = new Date(d[s].date).valueOf();
-          convert[v] = d[s];
-          var n = $scope.allSelectedDays[v] || { users: {}, length: 0 };
-          var found = false;
-          for (var j in n.users) {
-            if (n.users[j].user  && n.users[j].user.uid == u.uid) {
-              $scope.allSelectedDays[v].users[u.uid].time = d[s].time;
-              found = true;
-            }
-          }
-          if (!found) {
-            $scope.allSelectedDays[v] = $scope.allSelectedDays[v] || { users: {}, length: 0 };
-            if (!$scope.allSelectedDays[v].users[u.uid]) {
-              $scope.allSelectedDays[v].length += 1;
-            }
-            $scope.allSelectedDays[v].users[u.uid] = {
-              user: u,
-              time: d[s].time
-            }
-          }
-          $scope.allSelectedDays[v].date = v;
-          if ($scope.allSelectedDays[v].length > max) {
-            max = $scope.allSelectedDays[v].length;
-          }
-        }
+    var updateCalendarDigest = function() {
+      if(!$scope.$$phase) {
+        $scope.$apply(function() {
+          updateCalendar();
+        });
+      } else {
+        updateCalendar();
       }
-      $scope.preferredDays = [];
-      for (var k in $scope.allSelectedDays) {
-        if ($scope.allSelectedDays[k].length == max && convert[k]) {
-          $scope.preferredDays.push(convert[k]);
-        }
-      }
-      getTimeModel();
     }
 
-    $scope.userDates = {};
-    $scope.loading = true;
-    $scope.data.$loaded(function() {
-      $scope.loading = false;
-      if (!$scope.data.users) {
-        $scope.data.users = {};
+    var updateCalendar = function() {
+      var dates = eventSync.dates;
+      $scope.currentEvent.title = eventSync.title;
+      $scope.currentEvent.rejected = eventSync.rejected;
+
+      var box = {};
+      for (var k = 0; k < dates.length; k++) {
+        var d = dates[k].timestamp;
+        box[d] = dates[k];
+      }
+      var deleted = 0;
+      for (var k = 0; k < $scope.currentEvent.dates.length; k++) {
+        var index = k - deleted;
+        var time = $scope.currentEvent.dates[index].timestamp;
+        if (!box[time]) {
+          $scope.currentEvent.dates.slice(index, 1);
+          deleted += 1;
+        } else {
+          $scope.currentEvent.dates[index] = box[time];
+          delete box[time];
+        }
+      }
+      for (var k in box) {
+        $scope.currentEvent.dates.push(box[k]);
       }
 
-      if (!$scope.data.users[$rootScope.user.uid]) {
-        $scope.data.users[$rootScope.user.uid] = $rootScope.user;
-        $scope.data.$save();
-      } else {
-        $rootScope.user = $scope.data.users[$rootScope.user.uid];
-      }
-
-      if ($rootScope.user['rejected'] == null || $rootScope.user['rejected'] == undefined) {
-        $rootScope.user['rejected'] = false;
-      }
-
-      $scope.$watch('user', function() {
-        $scope.data.users[$rootScope.user.uid] = $rootScope.user;
-        $scope.data.$save();
-      });
-
-      $scope.$watch('user.rejected', function() {
-        $scope.data.users[$rootScope.user.uid] = $rootScope.user;
-        $scope.data.$save();
-      });
-
-      $scope.$watch('user.dates', function() {
-        $scope.data.users[$rootScope.user.uid] = $rootScope.user;
-        $scope.data.$save();
-      });
-
-      $rootScope.loading = false;
-      $(window).scrollTop(0);
-
-      $scope.selectedDate = null;
-
-      $scope.currentDateModel = null;
-
-      $scope.$watch('currentDateModel.time', function(val) {
-        if (val && $scope.selectedDate) {
-          var user = $rootScope.user;
-          if (user.dates) {
-            for (var k in user.dates) {
-              var d = user.dates[k];
-              if (parseInt(d.date) == $scope.selectedDate) {
-                $rootScope.user.dates[k].time = val;
-                $scope.currentDateModel = $rootScope.user.dates[k];
-                $scope.data.users[$rootScope.user.uid] = $rootScope.user;
-                $scope.data.$save();
-                updateCals();
-                return;
-              }
+      var ar = [];
+      var max = 0;
+      var rejected = eventSync.rejected || [];
+      for (var k = 0; k < dates.length; k++) {
+        var d = dates[k];
+        if (d.users) {
+          var usersAvailable = [];
+          for (var j = 0; j < d.users.length; j++) {
+            var uid = d.users[j];
+            if (rejected.indexOf(uid) == -1) {
+              usersAvailable.push(d.users[j]);
             }
           }
+          if (usersAvailable.length > max) {
+            max = usersAvailable.length;
+            ar = [];
+          }
+          if (max == usersAvailable.length) {
+            ar.push(new Date(dates[k].timestamp));
+          }
         }
-      });
+      }
+      $scope.preferredDays = ar;
+    }
 
-      $scope.$on('selectedDate', function(listener, args, force) {
-        $scope.selectedDate = args;
-        if (force) {
-          getTimeModel();
-        }
-      });
-      
-      $scope.data.$watch(function() {
-        updateCals();
-      }, true);
+    $scope.loading = true;
+    eventSync.$loaded(function() {
+      var user = Auth.getUser();
+      $scope.loading = false;
+      if (eventSync.rejected) {
+        $scope.userRejected = eventSync.rejected.indexOf(user.$id) != -1;
+      }
+      $scope.userDates = getUserDates();
+      startWatchUserDates();
+      startWatchUserRejected();
+      updateCalendarDigest();
+      eventSync.$watch(updateCalendarDigest);
     });
   });

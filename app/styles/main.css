@@ -231,6 +231,13 @@ header nav md-button.md-default-theme:not([disabled]).focus {
 	background: rgba(0,0,0,0.1);
 }
 
+.no-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow: auto;
+}
+
 footer {
 	width: 100%;
 	min-height: 150px;
@@ -347,7 +354,7 @@ md-checkbox .md-label {
 	display: block;
 	max-width: 1024px;
 	margin: 0 auto;
-	padding: 70px 20px 180px 20px;
+	padding: 70px 20px 230px 20px;
 	border-radius: 0px;
 	background: #FFF;
 	position: relative;
@@ -512,6 +519,7 @@ h2 > .avatar-crop {
 .date {
 	font-weight: bold;
 	display: inline-block;
+	margin: 0;
 }
 
 .date:after {
@@ -528,13 +536,9 @@ h2 > .avatar-crop {
 }
 
 .per-date {
-	margin-top: 30px;
-	width: 100%;
-	table-layout: fixed;
-}
-
-.per-date:first-child {
-	margin-top: 0px;
+	width: 33%;
+	display: inline-block;
+	padding: 30px 10px;
 }
 
 .avatar-crop {
@@ -606,7 +610,7 @@ h2 > .avatar-crop {
 }
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
-	border: 1px solid #A9CE9E;
+	border: none;
 	background: #C7FFB5;
 	color: #313131;
 	opacity: 1;

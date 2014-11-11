@@ -19,7 +19,7 @@ angular.module('himatesApp')
 
     $scope.openEvent = function(ev) {
     	$state.go('event.view', {
-    		currentEvent: ev
+    		eventId: ev.$id
     	});
     }
 
@@ -31,9 +31,11 @@ angular.module('himatesApp')
     }
 
     $scope.addEvent = function(obj) {
-    	$scope.event.createdAt = $scope.event.updatedAt = (new Date()).valueOf();
-    	$scope.events.$add(obj);
+        obj.createdAt = obj.updatedAt = (new Date()).valueOf();
+        var newChildRef = eventsRef.push();
+        newChildRef.set(obj);
     	$scope.events.$save();
+        console.log(newChildRef.key());
     }
 
   });

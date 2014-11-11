@@ -56,7 +56,7 @@ angular
         }
       })
       .state('event.view', {
-        url: '/event/view',
+        url: '/event/view/:eventId',
         templateUrl: 'partials/events/view.html',
         data: {
           authenticate: true
@@ -132,7 +132,7 @@ angular
       }
       if (user.github) {
         return user.github.displayName;
-      }      
+      }
     }
 
     $rootScope.getAvatar = function(user) {

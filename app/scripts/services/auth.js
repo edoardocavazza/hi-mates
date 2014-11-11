@@ -12,29 +12,27 @@ angular.module('himatesApp')
     $rootScope.user = null;
     var fbUrl = 'https://himates.firebaseio.com/';
     var rootRef = new Firebase(fbUrl);
-    var mapsRef = null;
-    var mapsSync = null;
+    var usersListRef = new Firebase(fbUrl + 'users');
+    var userMapsRef = new Firebase(fbUrl + 'user-mappings');
     var userRef = null;
     var sync = null;
-    
-    var createMapsSync = function() {
-      mapsRef = new Firebase(fbUrl + 'user-mappings');
-      mapsSync = $firebase(mapsRef).$asObject();
-    }
 
     var getUser = function(auth) {
       var dfr = $q.defer();
       if (auth) {
         var provider = auth.provider;
         var uid = auth.uid;
-        var providerList = new Firebase(fbUrl + 'user-mappings/' + provider);
+        var providerList = userMapsRef.child(provider);
         var list = $firebase(providerList).$asObject();
         list.$loaded(function() {
           var userid = list[uid] || null;
           if (!userid) {
             dfr.reject();
           } else {
-            dfr.resolve($firebase(new Firebase(fbUrl + 'users/' + userid)).$asObject());
+            var res = $firebase(usersListRef.child(userid)).$asObject();
+            res.$loaded(function() {
+              dfr.resolve(res);
+            });
           }
         })
       } else {
@@ -44,17 +42,23 @@ angular.module('himatesApp')
     }
 
     var createUser = function(data) {
+      var dfr = $q.defer();
       if (data) {
-        var usersListRef = new Firebase(fbUrl + 'users');
         var usersList = $firebase(usersListRef).$asArray();
-        var id = 'mate:' + usersList.length;
-        var userRef = new Firebase(fbUrl + 'users/' + id);
-        var user = $firebase(userRef).$asObject();
-        user.$id = id;
-        user[data.provider] = data[data.provider];
-        user.$save();
-        return user;
+        usersList.$loaded(function() {
+          var id = 'mate:' + usersList.length;
+          var userRef = new Firebase(fbUrl + 'users/' + id);
+          var user = $firebase(userRef).$asObject();
+          user.$id = id;
+          user[data.provider] = data[data.provider];
+          user.$save();
+          dfr.resolve(user);
+        });
+      } else {
+        dfr.reject();
       }
+
+      return dfr.promise;
     }
 
     var callbacks = {};
@@ -79,7 +83,6 @@ angular.module('himatesApp')
         var auth = rootRef.getAuth();
         var service = this;
         if (auth) {
-          createMapsSync();
           getUser(auth).then(function(user) {
             $rootScope.user = user;
             setup = true;
@@ -111,16 +114,13 @@ angular.module('himatesApp')
             }
           }
           if (user) {
-            if (!$rootScope.user) {
-              createMapsSync();
-            }
-            
             user[provider]['uid'] = user.uid;
             if ($rootScope.user) {
               $rootScope.$apply(function() {
-                mapsSync[provider] = mapsSync[provider] || {};
-                mapsSync[provider][user.uid] = $rootScope.user.$id;
-                mapsSync.$save();
+                var ref = userMapsRef.child(provider);
+                var mapped = {};
+                mapped[user.uid] = $rootScope.user.$id;
+                ref.set(mapped);
                 $rootScope.user[provider] = user[provider];
                 $rootScope.user.$save();
                 deferred.resolve($rootScope.user);
@@ -134,12 +134,16 @@ angular.module('himatesApp')
                 deferred.resolve($rootScope.user);
                 service.$trigger('login', [user]);
               }, function() {
-                $rootScope.user = createUser(user);
-                mapsSync[provider] = mapsSync[provider] || {};
-                mapsSync[provider][user.uid] = $rootScope.user.$id;
-                mapsSync.$save();
-                deferred.resolve($rootScope.user);
-                service.$trigger('login', [user, old]);
+                createUser(user)
+                  .then(function(newUser) {
+                    $rootScope.user = newUser;
+                    var ref = userMapsRef.child(provider);
+                    var mapped = {};
+                    mapped[user.uid] = $rootScope.user.$id;
+                    ref.set(mapped);
+                    deferred.resolve($rootScope.user);
+                    service.$trigger('login', [user, old]);
+                  });
               });
             }
           }
