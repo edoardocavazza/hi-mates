@@ -32,32 +32,32 @@ angular
       })
       .state('login', {
         url: '/login',
-        templateUrl: 'partials/login.html'
+        templateUrl: 'partials/auth/login.html'
       })
       .state('profile', {
         url: '/profile',
-        templateUrl: 'partials/profile.html',
+        templateUrl: 'partials/auth/profile.html',
         data: {
           authenticate: true
         }
       })
       .state('event', {
         abstract: true,
-        templateUrl: 'partials/event.html',
+        templateUrl: 'partials/events/event.html',
         data: {
           authenticate: true
         }
       })
       .state('event.create', {
         url: '/event/new',
-        templateUrl: 'partials/new-event.html',
+        templateUrl: 'partials/events/new.html',
         data: {
           authenticate: true
         }
       })
       .state('event.view', {
         url: '/event/view',
-        templateUrl: 'partials/view-event.html',
+        templateUrl: 'partials/events/view.html',
         data: {
           authenticate: true
         }
