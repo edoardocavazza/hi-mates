@@ -254,10 +254,10 @@ angular.module('himatesApp')
         var index = k - deleted;
         var time = $scope.currentEvent.dates[index].timestamp;
         if (!box[time]) {
-          $scope.currentEvent.dates.slice(index, 1);
+          $scope.currentEvent.dates.splice(index, 1);
           deleted += 1;
         } else {
-          $scope.currentEvent.dates[index] = box[time];
+          $scope.currentEvent.dates[index]['users'] = box[time].users;
           delete box[time];
         }
       }
