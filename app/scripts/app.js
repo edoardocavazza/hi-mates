@@ -87,7 +87,11 @@ angular
     }, 2000);
 
     Auth.$on('loaded', function(user) {
-      $state.transitionTo('dashboard');
+      if (lastPath) {
+        $location.path(lastPath);
+      } else {
+        $state.transitionTo('dashboard');
+      }
       isAuthLoaded = true;
       if (isPreloadTimeEnded) {
         $rootScope.loading = false;
@@ -98,9 +102,7 @@ angular
     });
 
     Auth.$on('login', function(user, previous) {
-      if (!previous) {
-        $state.transitionTo(lastPath ? lastPath.name : 'dashboard');
-      }
+      $state.transitionTo(lastPath ? lastPath.name : 'dashboard');
     });
 
     Auth.$on('logout', function() {
@@ -112,12 +114,11 @@ angular
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       $(window).scrollTop(0);
       if (Auth.isLogged() && toState.name == 'login') {
-        lastPath = null;
         $state.transitionTo('dashboard');
         event.preventDefault();
       }
       if (toState.data && toState.data.authenticate && toState.name != 'login' && !Auth.isLogged()) {
-        lastPath = toState;
+        lastPath = $location.path();
         // User isn’t authenticated
         $state.transitionTo('login');
         event.preventDefault();
