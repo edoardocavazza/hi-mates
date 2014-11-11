@@ -4,21 +4,78 @@
 	top: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.75);
 	z-index: 3000;
+}
+
+.modalMessage.confirm, .modalMessage.alert {
+	background: rgba(0,0,0,0.75);
+}
+
+.modalMessage.tooltip.ng-enter, 
+.modalMessage.tooltip.ng-show {
+	animation: fadeInDown 500ms;
+	-webkit-animation: fadeInDown 500ms;
+}
+
+.modalMessage.tooltip.ng-leave, 
+.modalMessage.tooltip.ng-hide {
+	animation: fadeOutUp 500ms;
+	-webkit-animation: fadeOutUp 500ms;
+}
+
+.modalMessage.confirm.ng-enter, 
+.modalMessage.confirm.ng-show,
+.modalMessage.alert.ng-enter, 
+.modalMessage.alert.ng-show {
+	animation: fadeIn 500ms;
+	-webkit-animation: fadeIn 500ms;
+}
+
+.modalMessage.confirm.ng-enter .modalMessagecontent, 
+.modalMessage.confirm.ng-show .modalMessagecontent,
+.modalMessage.alert.ng-enter .modalMessagecontent, 
+.modalMessage.alert.ng-show .modalMessagecontent {
+	animation: zoomIn 500ms;
+	-webkit-animation: zoomIn 500ms;
+}
+
+.modalMessage.confirm.ng-leave .modalMessagecontent, 
+.modalMessage.confirm.ng-hide .modalMessagecontent,
+.modalMessage.alert.ng-leave .modalMessagecontent, 
+.modalMessage.alert.ng-hide .modalMessagecontent {
+	animation: zoomOutDown 500ms;
+	-webkit-animation: zoomOutDown 500ms;
+}
+
+.modalMessage.confirm.ng-leave, 
+.modalMessage.confirm.ng-hide,
+.modalMessage.alert.ng-leave, 
+.modalMessage.alert.ng-hide {
+	animation: fadeOut 500ms;
+	-webkit-animation: fadeOut 500ms;
 }
 
 .modalMessagecontent {
 	position: absolute;
 	top: 50%;
 	margin: auto;
-	height: 360px;
 	width: 512px;
 	left: 0;
 	right: 0;
-	top: 0;
-	bottom: 0;
+	top: 20px;
 	background: #e5e5e5;
+	padding: 20px 20px 66px 20px;
+	max-height: 80%
+}
+
+.modalMessage.confirm .modalMessagecontent, .modalMessage.alert .modalMessagecontent {
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+}
+
+.modalMessagecontent .message-scroller > p {
+	margin: 0 0 1em 0;
 }
 
 .modalMessagecontent .commands {
@@ -30,4 +87,5 @@
 	text-align: right;
 	border-top: solid 1px rgba(0, 0, 0, 0.12);
 	padding: 5px 10px;
+	margin: 0;
 }

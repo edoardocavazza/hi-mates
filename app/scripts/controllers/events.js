@@ -35,7 +35,29 @@ angular.module('himatesApp')
         var newChildRef = eventsRef.push();
         newChildRef.set(obj);
     	$scope.events.$save();
-        console.log(newChildRef.key());
+        $state.go('event.view', {
+            eventId: newChildRef.key()
+        });
+    }
+
+    $scope.deleteEvent = function(id, title) {
+        var ev = eventsRef.child(id);
+        var ref = $firebase(ev);
+        var modal = Modal.show($scope, {
+            type: 'confirm',
+            message: 'Do you really want remove this event "' + title + '"?',
+            okLabel: 'yes',
+            cancelLabel: 'cancel'
+        });
+        modal.promise.then(function() {
+            modal.hide();
+            ref.$remove().then(function() {
+                //
+            }, function() {
+                //
+            });
+            $state.go('dashboard');
+        });
     }
 
   });

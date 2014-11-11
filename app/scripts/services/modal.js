@@ -8,14 +8,15 @@
  * Service in the himatesApp.
  */
 angular.module('himatesApp')
-  .service('Modal', function Modal($q, $compile, $interpolate, $animate) {
+  .service('Modal', function Modal($rootScope, $q, $compile, $interpolate, $animate, $timeout) {
     return {
-      show: function(scope, attrs, options) {
+      show: function(parentScope, attrs, options) {
         var dfr = $q.defer();
         var defaults = {
           directive: 'modal'
         }
         var element;
+        var scope = parentScope.$new(true, parentScope);
         var hideFn = function() {
           element.removeClass('show');
           $animate.leave(element);
@@ -27,26 +28,32 @@ angular.module('himatesApp')
           },
           message: '',
           content: null,
-          cancelLabel: 'cancel',
+          cancelLabel: null,
           okLabel: 'ok',
+          autoClose: null,
           cancel: function() {
             hideFn();
             dfr.reject();
           },
           ok: function() {
+            if (attrs.autoClose) {
+              hideFn();
+            }
             dfr.resolve();
-          },
-          modalData: {}
+          }
         }
         options = angular.extend(options || {}, defaults);
         attrs = angular.extend(defaultScope, attrs);
-        scope = angular.extend(scope, attrs);
+        scope.modal = attrs;
+        if (attrs.autoClose) {
+          $timeout(function() {
+            scope.modal.ok();
+          }, attrs.autoClose);
+        }
         element = $compile('<' + options.directive + '></' + options.directive + '>')(scope);
-        scope.modalData.element = element;
-        $animate.enter(element, $(document.body)).then(function() {
-          element.addClass('show');
-        });
+        $animate.enter(element, $(document.body));
         return {
+          element: element,
           promise: dfr.promise,
           hide: hideFn
         };

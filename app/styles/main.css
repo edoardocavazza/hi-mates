@@ -238,6 +238,17 @@ header nav md-button.md-default-theme:not([disabled]).focus {
 	overflow: auto;
 }
 
+.event-title {
+	display: inline-block;
+}
+
+.event-options {
+	display: inline-block;
+	margin-left: 20px;
+	font-size: 0.8em;
+	text-transform: lowercase;
+}
+
 footer {
 	width: 100%;
 	min-height: 150px;

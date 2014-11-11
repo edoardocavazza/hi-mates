@@ -11,15 +11,16 @@ angular.module('himatesApp')
     return {
       restrict: 'E',
       replace: true,
-      template: ' <div class="modalMessage" ng-class="type" ng-cloak>' +
+      scope: true,
+      template: ' <div class="modalMessage" ng-class="modal.type" ng-cloak>' +
               '<div class="modalMessagecontent">' + 
                 '<div class="message-scroller">' +
-                  '<p ng-bind-html="::message"></p>' +
-                  '<div ng-include="::content"></div>' +
+                  '<p ng-bind-html="modal.message"></p>' +
+                  '<div ng-include="modal.content"></div>' +
                 '</div>' + 
                 '<fieldset class="commands">' +
-                  '<md-button md-theme="red" class="md-primary" id="cancel-button" ng-if="type == \'confirm\'" tabindex="1000" data-cancel="" ng-click="cancel($event, modalData)">{{ ::cancelLabel }}</md-button>' +
-                  '<md-button md-theme="green" class="md-primary" id="ok-button" tabindex="1001" autofocus data-ok="" ng-click="ok($event, modalData)">{{ ::okLabel }}</md-button>' +
+                  '<md-button md-theme="red" class="md-primary" id="cancel-button" ng-if="modal.cancelLabel" tabindex="1000" data-cancel="" ng-click="modal.cancel($event)" aria-label="{{ modal.cancelLabel }}">{{ modal.cancelLabel }}</md-button>' +
+                  '<md-button md-theme="green" class="md-primary" id="ok-button" tabindex="1001" autofocus data-ok="" ng-click="modal.ok($event)" aria-label="{{ modal.okLabel }}">{{ modal.okLabel }}</md-button>' +
                 '</fieldset>' +
               '</div>' +
             '</div>'

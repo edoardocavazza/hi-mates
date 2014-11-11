@@ -103,6 +103,7 @@ angular
     Auth.setup();
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+      $(window).scrollTop(0);
       if (Auth.isLogged() && toState.name == 'login') {
         lastPath = null;
         $state.transitionTo('dashboard');

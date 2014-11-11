@@ -15,10 +15,12 @@ angular.module('himatesApp')
     var datesRef = eventRef.child('dates');
     var eventSync = $firebase(eventRef).$asObject();
     $scope.currentEvent = {
+      id: $stateParams.eventId,
       title: '',
       rejected: [],
       dates: []
     };
+
     $scope.filter = 'date';
     $scope.preferredDays = [];
     $scope.usersProfiles = {}
@@ -243,51 +245,55 @@ angular.module('himatesApp')
       var dates = eventSync.dates;
       $scope.currentEvent.title = eventSync.title;
       $scope.currentEvent.rejected = eventSync.rejected;
-
-      var box = {};
-      for (var k = 0; k < dates.length; k++) {
-        var d = dates[k].timestamp;
-        box[d] = dates[k];
-      }
-      var deleted = 0;
-      for (var k = 0; k < $scope.currentEvent.dates.length; k++) {
-        var index = k - deleted;
-        var time = $scope.currentEvent.dates[index].timestamp;
-        if (!box[time]) {
-          $scope.currentEvent.dates.splice(index, 1);
-          deleted += 1;
-        } else {
-          $scope.currentEvent.dates[index]['users'] = box[time].users;
-          delete box[time];
+      if (dates) {
+        var box = {};
+        for (var k = 0; k < dates.length; k++) {
+          var d = dates[k].timestamp;
+          box[d] = dates[k];
         }
-      }
-      for (var k in box) {
-        $scope.currentEvent.dates.push(box[k]);
-      }
+        var deleted = 0;
+        for (var k = 0; k < $scope.currentEvent.dates.length; k++) {
+          var index = k - deleted;
+          var time = $scope.currentEvent.dates[index].timestamp;
+          if (!box[time]) {
+            $scope.currentEvent.dates.splice(index, 1);
+            deleted += 1;
+          } else {
+            $scope.currentEvent.dates[index]['users'] = box[time].users;
+            delete box[time];
+          }
+        }
+        for (var k in box) {
+          $scope.currentEvent.dates.push(box[k]);
+        }
 
-      var ar = [];
-      var max = 0;
-      var rejected = eventSync.rejected || [];
-      for (var k = 0; k < dates.length; k++) {
-        var d = dates[k];
-        if (d.users) {
-          var usersAvailable = [];
-          for (var j = 0; j < d.users.length; j++) {
-            var uid = d.users[j];
-            if (rejected.indexOf(uid) == -1) {
-              usersAvailable.push(d.users[j]);
+        var ar = [];
+        var max = 0;
+        var rejected = eventSync.rejected || [];
+        for (var k = 0; k < dates.length; k++) {
+          var d = dates[k];
+          if (d.users) {
+            var usersAvailable = [];
+            for (var j = 0; j < d.users.length; j++) {
+              var uid = d.users[j];
+              if (rejected.indexOf(uid) == -1) {
+                usersAvailable.push(d.users[j]);
+              }
+            }
+            if (usersAvailable.length > max) {
+              max = usersAvailable.length;
+              ar = [];
+            }
+            if (max == usersAvailable.length) {
+              ar.push(new Date(dates[k].timestamp));
             }
           }
-          if (usersAvailable.length > max) {
-            max = usersAvailable.length;
-            ar = [];
-          }
-          if (max == usersAvailable.length) {
-            ar.push(new Date(dates[k].timestamp));
-          }
         }
+        $scope.preferredDays = ar;
+      } else {
+        $scope.currentEvent.dates = [];
+        $scope.preferredDays = [];
       }
-      $scope.preferredDays = ar;
     }
 
     $scope.loading = true;
