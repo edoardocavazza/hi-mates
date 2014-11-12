@@ -251,18 +251,14 @@ header nav md-button.md-default-theme:not([disabled]).focus {
 
 footer {
 	width: 100%;
-	min-height: 150px;
 	padding: 20px;
 	border-top: solid 1px #CCC;
-	background-color: #e5e5e5;
-	color: #444;
-	position: relative;
-	margin-top: -150px;
+	max-width: 1024px;
+	margin: 0 auto;
 }
 
 footer p {
-	margin: 0 auto;
-	max-width: 1024px;
+	margin: 0;
 	display: block;
 }
 
@@ -361,11 +357,10 @@ md-checkbox .md-label {
 
 .wrapper {
 	width: 100%;
-	min-height: 100%;
 	display: block;
 	max-width: 1024px;
 	margin: 0 auto;
-	padding: 70px 20px 230px 20px;
+	padding: 70px 20px 60px 20px;
 	border-radius: 0px;
 	background: #FFF;
 	position: relative;
