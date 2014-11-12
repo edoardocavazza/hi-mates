@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc directive
- * @name himatesApp.directive:img
+ * @name himatesApp.directive:hmAvatar
  * @description
  * # img
  */
 angular.module('himatesApp')
-  .directive('img', function () {
+  .directive('hmAvatar', function () {
     return {
-      restrict: 'E',
+      restrict: 'C',
       link: function postLink(scope, element, attrs) {
         var img = element[0];
         var dim = function() {

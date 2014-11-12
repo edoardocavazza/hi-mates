@@ -13,7 +13,7 @@ angular.module('himatesApp')
       show: function(parentScope, attrs, options) {
         var dfr = $q.defer();
         var defaults = {
-          directive: 'modal'
+          directive: 'hm-modal'
         }
         var element;
         var scope = parentScope.$new(true, parentScope);

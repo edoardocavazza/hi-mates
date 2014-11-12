@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: hmUserCalendar', function () {
+describe('Directive: hmModal', function () {
 
   // load the directive's module
   beforeEach(module('himatesApp'));
@@ -13,8 +13,8 @@ describe('Directive: hmUserCalendar', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<hm-user-calendar></hm-user-calendar>');
+    element = angular.element('<hm-modal></hm-modal>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the hmUserCalendar directive');
+    expect(element.text()).toBe('this is the modal directive');
   }));
 });
