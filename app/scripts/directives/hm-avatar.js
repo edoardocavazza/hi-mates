@@ -1,10 +1,16 @@
 'use strict';
 
-/**
+ /**
  * @ngdoc directive
  * @name himatesApp.directive:hmAvatar
+ * @restrict C
+ *
  * @description
- * # img
+ *
+ * `hmAvatar` is a directive that handle avatar image sizes.
+ *
+ * @example
+    <img title="Albert Einstein" class="hm-avatar" draggable="false" src="http://m.c.lnkd.licdn.com/mpr/mpr/p/5/005/067/3b6/379aa17.jpg" />
  */
 angular.module('himatesApp')
   .directive('hmAvatar', function () {
