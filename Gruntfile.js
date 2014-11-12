@@ -346,6 +346,22 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    // NgDoc
+    ngdocs: {
+      options: {
+        dest: 'docs',
+        scripts: ['./app/scripts/app.js', 'angular.js'],
+        html5Mode: true,
+        startPage: '/api',
+        title: 'Hi Mates! Documentation',
+        image: './resources/icons/icon256x256.png'
+      },
+      api: {
+        src: ['app/**/*.js', '!app/**/*.spec.js'],
+        title: 'API Documentation'
+      }
     }
   });
 
@@ -400,4 +416,7 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.loadNpmTasks('grunt-ngdocs');
+
 };
