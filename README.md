@@ -5,41 +5,51 @@ An interactive web app for organize group activities.
 
 ## Set up
 This project has been generated with the angular [Yeoman](http://yeoman.io/ "Yeoman") generator. 
-### Node dependencies
+
+**Node dependencies**
+
 In order to load all dependencies and build (or serve) the project, first you need to install all [node](http://nodejs.org "NodeJS") dependencies:
 
-<code>cd ~/dir/to/project</code>
+<pre>
+cd ~/dir/to/project
+npm install
+</pre>
 
-<code>npm install</code>
+**Bower**
 
-### Bower 
 [Bower](http://bower.io/ "Bower") is used to download and reference the app specific dependencies, such as js libraries or css files, fonts and more and more.
 
 Install bower:
 
-<code>npm install bower -g</code>
+<pre>npm install bower -g</pre>
 
 Run bower:
 
-<code>cd ~/dir/to/project</code>
+<pre>
+cd ~/dir/to/project
+bower install
+</pre>
 
-<code>bower install</code>
+**Grunt**
 
-### Grunt
 Now we are ready to build or serve the application using [grunt](http://gruntjs.com/ "GruntJS").
 
 Install grunt:
 
-<code>npm install grunt-cli -g</code>
+<pre>
+npm install grunt-cli -g
+</pre>
 
 Build...
 
-<code>cd ~/dir/to/project</code>
-
-<code>grunt build</code>
+<pre>
+cd ~/dir/to/project
+grunt build
+</pre>
 
 ... or serve
 
-<code>cd ~/dir/to/project</code>
-
-<code>grunt serve</code>
+<pre>
+cd ~/dir/to/project
+grunt serve
+</pre>
