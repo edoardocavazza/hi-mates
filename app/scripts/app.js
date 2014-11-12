@@ -102,7 +102,7 @@ angular
     });
 
     Auth.$on('login', function(user, previous) {
-      $state.transitionTo(lastPath ? lastPath.name : 'dashboard');
+      $state.transitionTo(lastPath ? lastPath : 'dashboard');
     });
 
     Auth.$on('logout', function() {

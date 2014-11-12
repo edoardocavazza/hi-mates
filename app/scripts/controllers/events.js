@@ -16,9 +16,21 @@ angular.module('himatesApp')
   $scope.currentEvent = {
     creator: Auth.getUser().$id
   };
+  $scope.availableDates = [];
   if ($stateParams.eventId) {
     $scope.currentEvent = $firebase(eventsRef.child($stateParams.eventId)).$asObject();
+    $scope.currentEvent.$loaded(function() {
+      $scope.availableDates = $scope.currentEvent.availableDates || $scope.availableDates;
+    });
   }
+
+  $scope.$watch('availableDates', function(val) {
+    var res = [];
+    for (var k = 0; k < val.length; k++) {
+      res.push(val[k].valueOf());
+    } 
+    $scope.currentEvent.availableDates = res;
+  }, true);
 
   $scope.openEvent = function(ev) {
     $state.go('event.view', {
@@ -34,6 +46,7 @@ angular.module('himatesApp')
 
   $scope.saveEvent = function(obj) {
     if (obj.$id) {
+      obj.updatedAt = (new Date()).valueOf();
       obj.$save();
       $state.go('event.view', {
         eventId: obj.$id
@@ -45,11 +58,10 @@ angular.module('himatesApp')
 
   $scope.addEvent = function(obj) {
     obj.createdAt = obj.updatedAt = (new Date()).valueOf();
-    var newChildRef = eventsRef.push();
-    newChildRef.set(obj);
-    $scope.events.$save();
-    $state.go('event.view', {
-      eventId: newChildRef.key()
+    $scope.events.$add(obj).then(function(newChildRef) {
+      $state.go('event.view', {
+        eventId: newChildRef.key()
+      });
     });
   }
 
