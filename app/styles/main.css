@@ -261,6 +261,7 @@ footer {
 footer p {
 	margin: 0;
 	display: block;
+	color: #999;
 }
 
 footer img {

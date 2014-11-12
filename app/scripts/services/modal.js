@@ -18,7 +18,6 @@ angular.module('himatesApp')
         var element;
         var scope = parentScope.$new(true, parentScope);
         var hideFn = function() {
-          element.removeClass('show');
           $animate.leave(element);
         }
         var defaultScope = {
