@@ -38,7 +38,7 @@
       <a href="javascript:void(0)" ng-class="{ 'on': filter == 'day' }" ng-click="setFilter('day')">best day</a>
     </nav>
     <ul class="no-list">
-      <li class="per-date anim-zoomIn" ng-repeat="d in eventDatesAlias.dates | orderFilter:filter">
+      <li class="per-date anim-zoomIn" ng-repeat="d in eventDatesAlias | orderFilter:filter">
         <h4 class="date" data-number="{{ d.users.length }}">{{ d.date }}</h4>
         <ul class="no-list">
           <li ng-repeat="userData in d.users" class="avatar-crop anim-zoomIn">
