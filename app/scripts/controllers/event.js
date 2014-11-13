@@ -68,13 +68,7 @@ angular.module('himatesApp')
         n = ar.length;
       }
 
-      if (n == 0) {
-        return 'Nobody has';
-      } else if (n == 1) {
-        return 'Just 1 mate has';
-      } 
-
-      return n + ' mates have';
+      return n;
     } 
 
     $scope.getRejectedNumber = function() {
@@ -82,20 +76,7 @@ angular.module('himatesApp')
       if (eventSync && eventSync.rejected) {
         n = eventSync.rejected.length;
       }
-
-      if (n == 0) {
-        return false;
-      } else if (n == 1) {
-        return '1 mate';
-      }
-      return n + ' mates';
-    }
-
-    $scope.hasSubscriptions = function(obj) {
-      if (eventSync && eventSync.dates && eventSync.dates.length > 0){
-        return true;
-      }
-      return false;
+      return n;
     }
 
     var getUserDates = function() {
@@ -107,7 +88,6 @@ angular.module('himatesApp')
           if (d.users.indexOf(user.$id) != -1) dates.push( new Date(d.timestamp) );
         }
       }
-
       return dates;
     }
 
@@ -208,20 +188,6 @@ angular.module('himatesApp')
           eventSync.$save();
         }
       }, true);
-    }
-
-    var getTimeModel = function() {
-      var user = $rootScope.user;
-      if (user.dates) {
-        for (var k in user.dates) {
-          var d = user.dates[k];
-          if (parseInt(d.date) == $scope.selectedDate) {
-            $scope.currentDateModel = $rootScope.user.dates[k];
-            return;
-          }
-        }
-      }
-      $scope.currentDateModel = null;
     }
 
     var updateCalendarDigest = function() {
