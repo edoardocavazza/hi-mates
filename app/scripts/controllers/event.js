@@ -9,14 +9,14 @@
  */
 angular.module('himatesApp')
   .controller('EventCtrl', function ($scope, $rootScope, $http, $q, $firebase, $timeout, $stateParams, AppServices, Auth) {
-    var eventRef = new Firebase(AppServices.fbUrl('events/' + $stateParams.eventId));
-    var datesRef = eventRef.child('dates');
-    var eventSync = $firebase(eventRef).$asObject();
-    $scope.eventDatesAlias = [];
+    var isNew = $stateParams.eventId ? false : true,
+        eventRef, datesRef, eventSync;
 
-    $scope.filter = 'date';
+    $scope.availableDates = [];
+    $scope.eventDatesAlias = [];
     $scope.preferredDays = [];
-    $scope.usersProfiles = {}
+    $scope.usersProfiles = {};
+    $scope.filter = 'date';
 
     $scope.getProfile = function(id) {
       if (!$scope.usersProfiles[id]) {
@@ -287,17 +287,38 @@ angular.module('himatesApp')
       }
     }
 
-    $scope.loading = true;
-    eventSync.$loaded(function() {
-      var user = Auth.getUser();
-      $scope.loading = false;
-      if (eventSync.rejected) {
-        $scope.userRejected = eventSync.rejected.indexOf(user.$id) != -1;
+    $scope.$watch('availableDates', function(val) {
+      var res = [];
+      for (var k = 0; k < val.length; k++) {
+        res.push(val[k].valueOf());
+      } 
+      $scope.currentEvent.availableDates = res;
+    }, true);
+
+    if (isNew) {
+      $scope.currentEvent = {
+        creator: Auth.getUser().$id
       }
-      $scope.userDates = getUserDates();
-      startWatchUserDates();
-      startWatchUserRejected();
-      updateCalendarDigest();
-      eventSync.$watch(updateCalendarDigest);
-    });
+    } else {
+      eventRef = new Firebase(AppServices.fbUrl('events/' + $stateParams.eventId));
+      datesRef = eventRef.child('dates');
+      $scope.currentEvent = eventSync = $firebase(eventRef).$asObject();
+
+      $scope.loading = true;
+      eventSync.$loaded(function() {
+        var user = Auth.getUser();
+        $scope.loading = false;
+        if (eventSync.rejected) {
+          $scope.userRejected = eventSync.rejected.indexOf(user.$id) != -1;
+        }
+        if (eventSync.availableDates) {
+          $scope.availableDates = $scope.currentEvent.availableDates;
+        }
+        $scope.userDates = getUserDates();
+        startWatchUserDates();
+        startWatchUserRejected();
+        updateCalendarDigest();
+        eventSync.$watch(updateCalendarDigest);
+      });
+    }
   });
