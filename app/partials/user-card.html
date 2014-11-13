@@ -1,6 +1,6 @@
 <div class="user-card">
 	<div class="user-avatar">
-		<md-button class="avatar-crop" ng-href="#/profile/{{ getUserId(user) }}" aria-label="{{ getRealName(user) }} avatar">
+		<md-button class="avatar-crop" ng-click="navigate('/profile/' + getUserId(user))" aria-label="{{ getRealName(user) }} avatar">
 		  <img class="hm-avatar" draggable="false" ng-src="{{ getAvatar(user) }}" />
 		</md-button>
 		<md-tooltip ng-if="getRealName(user)">{{ getRealName(user) }}</md-tooltip>

@@ -42,7 +42,7 @@
         <md-button disabled ng-show="user && user.$id && showButtons" ui-sref="groups" aria-label="Go to your groups page">Groups</md-button>
       </nav>
       <nav class="nav-right">
-        <md-button ng-show="user && user.$id && showButtons" class="fa fa-user" ui-sref="profile.mine" aria-label="Go to your profile page"></md-button>
+        <md-button ng-show="user && user.$id && showButtons" class="fa fa-user" ui-sref="me" aria-label="Go to your profile page"></md-button>
         <md-button ng-show="user && user.$id && showButtons" class="fa fa-sign-out" ng-click="logout()" aria-label="Log out"></md-button>
       </nav>
     </header>

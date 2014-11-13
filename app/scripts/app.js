@@ -37,15 +37,15 @@ angular
         url: '/login',
         templateUrl: 'partials/auth/login.html'
       })
-      .state('profile.mine', {
-        url: '/profile',
+      .state('profile', {
+        url: '/profile/:profileId',
         templateUrl: 'partials/auth/profile.html',
         data: {
           authenticate: true
         }
       })
-      .state('profile', {
-        url: '/profile/:profileId',
+      .state('me', {
+        url: '/me',
         templateUrl: 'partials/auth/profile.html',
         data: {
           authenticate: true
