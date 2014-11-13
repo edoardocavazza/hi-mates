@@ -8,9 +8,7 @@
  * Service in the himatesApp.
  */
 angular.module('himatesApp')
-  .service('AppServices', function AppServices() {
-  	var baseUrl = 'https://himates.firebaseio.com';
-
+  .service('AppServices', function AppServices(fbURL) {
     return {
     	fbUrl: function(path) {
     		path = path || '';
@@ -18,7 +16,7 @@ angular.module('himatesApp')
     		if (!startsWithSlash) {
     			path = '/' + path;
     		}
-    		return baseUrl + path;
+    		return fbURL + path;
     	}
     }
   });

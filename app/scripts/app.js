@@ -19,6 +19,9 @@ angular
     'ngMaterial',
     'firebase'
   ])
+
+  .value('fbURL', 'https://himates.firebaseio.com')
+
   .config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/dashboard');
 
