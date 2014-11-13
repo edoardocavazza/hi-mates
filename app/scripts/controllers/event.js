@@ -8,9 +8,8 @@
  * Controller of the himatesApp
  */
 angular.module('himatesApp')
-  .controller('EventCtrl', function ($scope, $rootScope, $http, $q, $firebase, $timeout, $stateParams, Auth) {
-    var fbUrl = 'https://himates.firebaseio.com/';
-    var eventRef = new Firebase(fbUrl + 'events/' + $stateParams.eventId);
+  .controller('EventCtrl', function ($scope, $rootScope, $http, $q, $firebase, $timeout, $stateParams, AppServices, Auth) {
+    var eventRef = new Firebase(AppServices.fbUrl('events/' + $stateParams.eventId));
     var datesRef = eventRef.child('dates');
     var eventSync = $firebase(eventRef).$asObject();
     $scope.eventDatesAlias = [];
@@ -21,7 +20,7 @@ angular.module('himatesApp')
 
     $scope.getProfile = function(id) {
       if (!$scope.usersProfiles[id]) {
-        var usersRef = new Firebase(fbUrl + 'users');
+        var usersRef = new Firebase(AppServices.fbUrl('users'));
         var requested = usersRef.child(id);
         var sync = $firebase(requested).$asObject();
         $scope.usersProfiles[id] = {};

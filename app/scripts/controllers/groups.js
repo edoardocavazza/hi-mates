@@ -8,8 +8,7 @@
  * Controller of the himatesApp
  */
 angular.module('himatesApp')
-  .controller('GroupsCtrl', function ($scope, $firebase) {
-    var fbUrl = 'https://himates.firebaseio.com/groups';
-    var eventsRef = new Firebase(fbUrl);
+  .controller('GroupsCtrl', function ($scope, $firebase, AppServices) {
+    var eventsRef = new Firebase(AppServices.fbUrl('groups'));
     $scope.groups = $firebase(eventsRef).$asArray();
   });

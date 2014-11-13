@@ -8,12 +8,11 @@
  * Factory in the himatesApp.
  */
 angular.module('himatesApp')
-  .factory('Auth', function ($rootScope, $q, $firebase) {
+  .factory('Auth', function ($rootScope, $q, $firebase, AppServices) {
     $rootScope.user = null;
-    var fbUrl = 'https://himates.firebaseio.com/';
-    var rootRef = new Firebase(fbUrl);
-    var usersListRef = new Firebase(fbUrl + 'users');
-    var userMapsRef = new Firebase(fbUrl + 'user-mappings');
+    var rootRef = new Firebase(AppServices.fbUrl());
+    var usersListRef = rootRef.child('users');
+    var userMapsRef = rootRef.child('user-mappings');
     var userRef = null;
     var sync = null;
 
@@ -47,7 +46,7 @@ angular.module('himatesApp')
         var usersList = $firebase(usersListRef).$asArray();
         usersList.$loaded(function() {
           var id = 'mate:' + usersList.length;
-          var userRef = new Firebase(fbUrl + 'users/' + id);
+          var userRef = usersListRef.child(id);
           var user = $firebase(userRef).$asObject();
           user.$id = id;
           user[data.provider] = data[data.provider];

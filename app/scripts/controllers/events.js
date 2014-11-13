@@ -8,9 +8,8 @@
  * Controller of the himatesApp
  */
 angular.module('himatesApp')
-  .controller('EventsCtrl', function ($scope, $firebase, Modal, Auth, $state, $stateParams) {
-  var fbUrl = 'https://himates.firebaseio.com/events';
-  var eventsRef = new Firebase(fbUrl);
+  .controller('EventsCtrl', function ($scope, $firebase, $state, $stateParams, Modal, AppServices, Auth) {
+  var eventsRef = new Firebase(AppServices.fbUrl('events'));
   $scope.events = $firebase(eventsRef).$asArray();
   $scope.currentEventId = $stateParams.eventId || null;
   $scope.currentEvent = {
