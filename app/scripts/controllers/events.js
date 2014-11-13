@@ -11,25 +11,6 @@ angular.module('himatesApp')
   .controller('EventsCtrl', function ($scope, $firebase, $state, $stateParams, Modal, AppServices, Auth) {
   var eventsRef = new Firebase(AppServices.fbUrl('events'));
   $scope.events = $firebase(eventsRef).$asArray();
-  $scope.currentEventId = $stateParams.eventId || null;
-  $scope.currentEvent = {
-    creator: Auth.getUser().$id
-  };
-  $scope.availableDates = [];
-  if ($stateParams.eventId) {
-    $scope.currentEvent = $firebase(eventsRef.child($stateParams.eventId)).$asObject();
-    $scope.currentEvent.$loaded(function() {
-      $scope.availableDates = $scope.currentEvent.availableDates || $scope.availableDates;
-    });
-  }
-
-  $scope.$watch('availableDates', function(val) {
-    var res = [];
-    for (var k = 0; k < val.length; k++) {
-      res.push(val[k].valueOf());
-    } 
-    $scope.currentEvent.availableDates = res;
-  }, true);
 
   $scope.openEvent = function(ev) {
     $state.go('event.view', {
