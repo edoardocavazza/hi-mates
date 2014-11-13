@@ -1,6 +1,8 @@
-<section class="profile">
-	<h2 ng-include="'partials/user-card.html'"></h2>
-	<div ng-controller="LoginCtrl" >
+<section class="profile" ng-controller="ProfileCtrl">
+	<header class="user-header" ng-if="profileUser.$id">
+		<h2 ng-init="user = profileUser" ng-include="'partials/user-card.html'"></h2>
+	</header>
+	<div ng-if="canAddAccounts()" ng-controller="LoginCtrl">
 		<h3>Linked profile:</h3>
 		<div layout="vertical" layout-sm="horizontal" layout-align="left center">
 		  <md-button ng-repeat="(auth, enabled) in loggedService" ng-if="enabled" class="md-fab login-button" ng-class="auth" ng-click="logoutProvider(auth)" aria-label="You are logged with {{ auth }}" title="You are logged with {{ auth }}"></md-button>

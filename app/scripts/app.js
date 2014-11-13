@@ -37,8 +37,15 @@ angular
         url: '/login',
         templateUrl: 'partials/auth/login.html'
       })
-      .state('profile', {
+      .state('profile.mine', {
         url: '/profile',
+        templateUrl: 'partials/auth/profile.html',
+        data: {
+          authenticate: true
+        }
+      })
+      .state('profile', {
+        url: '/profile/:profileId',
         templateUrl: 'partials/auth/profile.html',
         data: {
           authenticate: true
@@ -127,6 +134,10 @@ angular
         event.preventDefault();
       }
     });
+
+    $rootScope.navigate = function(path) {
+      $location.path(path);
+    }
 
     $rootScope.getRealName = function(user) {
       return AppServices.getRealName(user || $rootScope.user);
