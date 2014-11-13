@@ -431,6 +431,20 @@ md-checkbox .md-label {
 	padding-right: 2%;
 }
 
+#subscriptions .user-card {
+	margin-top: 10px;
+	display: inline-block;
+	position: relative;
+}
+
+#subscriptions .user-list-entry {
+	display: inline-block;
+}
+
+#subscriptions .user-card .user-title{
+	display: none;
+}
+
 .morning {
 	border-left: solid 2px red;
 	padding-left: 20px;
@@ -515,7 +529,7 @@ md-checkbox .md-label {
 	overflow: hidden;
 	display: inline-block;
 	vertical-align: middle;
-	margin: 10px 10px 0 0;
+	margin: 0 10px 0 0;
 	-webkit-transform: translate3d(0,0,0);
 	transform: translate3d(0,0,0);
 }
@@ -547,6 +561,11 @@ h2 > .avatar-crop {
 	width: 33%;
 	display: inline-block;
 	padding: 30px 10px;
+}
+
+.user-card .user-avatar {
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .avatar-crop {

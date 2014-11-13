@@ -15,21 +15,7 @@ angular.module('himatesApp')
     $scope.availableDates = [];
     $scope.eventDatesAlias = [];
     $scope.preferredDays = [];
-    $scope.usersProfiles = {};
     $scope.filter = 'date';
-
-    $scope.getProfile = function(id) {
-      if (!$scope.usersProfiles[id]) {
-        var usersRef = new Firebase(AppServices.fbUrl('users'));
-        var requested = usersRef.child(id);
-        var sync = $firebase(requested).$asObject();
-        $scope.usersProfiles[id] = {};
-        sync.$loaded(function() {
-          $scope.usersProfiles[id] = sync;
-        });
-      }
-      return $scope.usersProfiles[id];
-    }
 
     $scope.setFilter = function(f) {
       $scope.filter = f;

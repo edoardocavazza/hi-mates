@@ -73,7 +73,7 @@ angular
         }
       });
   })
-  .run(function($rootScope, $location, $state, $timeout, Auth) {
+  .run(function($rootScope, $location, $state, $timeout, Auth, AppServices) {
     var lastPath = null;
     var isPreloadTimeEnded = false;
     var isAuthLoaded = false;
@@ -129,41 +129,15 @@ angular
     });
 
     $rootScope.getRealName = function(user) {
-      var user = user || $rootScope.user;
-      if (!user) {
-        return '';
-      }
-      if (user.facebook) {
-        return user.facebook.displayName;
-      }
-      if (user.google) {
-        return user.google.displayName;
-      }
-      if (user.twitter) {
-        return user.twitter.displayName;
-      }
-      if (user.github) {
-        return user.github.displayName;
-      }
+      return AppServices.getRealName(user || $rootScope.user);
     }
 
     $rootScope.getAvatar = function(user) {
-      var user = user || $rootScope.user;
-      if (!user) {
-        return '';
-      }
-      if (user.facebook) {
-        return user.facebook.cachedUserProfile.picture.data.url;
-      }
-      if (user.twitter) {
-        return user.twitter.cachedUserProfile.profile_image_url;
-      }
-      if (user.google) {
-        return user.google.cachedUserProfile.picture;
-      }
-      if (user.github) {
-        return user.github.cachedUserProfile.avatar_url;
-      }
+      return AppServices.getAvatar(user || $rootScope.user);
+    }
+
+    $rootScope.getUserId = function(user) {
+      return AppServices.getUserId(user || $rootScope.user);
     }
 
     $rootScope.logout = function() {
