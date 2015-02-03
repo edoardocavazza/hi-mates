@@ -19,8 +19,8 @@
     "open-sans-fontface": "~1.1.0",
     "animate.css": "https://github.com/daneden/animate.css.git#~3.2.0",
     "angular-ui-router": "~0.2.11",
-    "components-font-awesome": "~4.2.0",
-    "angularfire": "~0.9.2"
+    "angularfire": "~0.9.2",
+    "material-design-icons": "~1.0.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",

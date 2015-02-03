@@ -226,6 +226,9 @@ body > header nav md-button{
 	font-size: 1rem;
 }
 
+md-button[href] {
+	pointer-events: all;
+}
  
 md-button .md-button-inner:empty {
 	display: none;

@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
     <link rel="stylesheet" href="bower_components/open-sans-fontface/open-sans.css" />
     <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
-    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -42,8 +41,8 @@
         <md-button disabled ng-show="user && user.$id && showButtons" ui-sref="groups" aria-label="Go to your groups page">Groups</md-button>
       </nav>
       <nav class="nav-right">
-        <md-button ng-show="user && user.$id && showButtons" class="fa fa-user" ui-sref="me" aria-label="Go to your profile page"></md-button>
-        <md-button ng-show="user && user.$id && showButtons" class="fa fa-sign-out" ng-click="logout()" aria-label="Log out"></md-button>
+        <md-button ng-show="user && user.$id && showButtons" class="fa icon-account" ui-sref="me" aria-label="Go to your profile page">Account</md-button>
+        <md-button ng-show="user && user.$id && showButtons" class="fa icon-sign-out" ng-click="logout()" aria-label="Log out">See ya!</md-button>
       </nav>
     </header>
     <div class="wrapper" ui-view></div>
