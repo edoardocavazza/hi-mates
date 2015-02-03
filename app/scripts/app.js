@@ -13,10 +13,10 @@ angular
     'ngAnimate',
     'ngCookies',
     'ngResource',
-    'ui.router',
     'ngSanitize',
     'ngTouch',
     'ngMaterial',
+    'ui.router',
     'firebase'
   ])
 
