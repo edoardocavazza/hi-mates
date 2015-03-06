@@ -13,6 +13,7 @@ angular.module('himatesApp')
     var usersProfiles = {};
 
     return {
+
     	fbUrl: function(path) {
     		path = path || '';
     		var startsWithSlash = (path && path.length > 0) ? path[0] == '/' : false;
@@ -21,6 +22,7 @@ angular.module('himatesApp')
     		}
     		return fbURL + path;
     	},
+
         getProfile: function(id) {
           if (!usersProfiles[id]) {
             var usersRef = new Firebase(this.fbUrl('users'));
@@ -33,6 +35,7 @@ angular.module('himatesApp')
           }
           return usersProfiles[id];
         },
+
         getRealName: function(user) {
             if (typeof user == 'string') {
                 return this.getRealName(this.getProfile(user));
@@ -53,6 +56,29 @@ angular.module('himatesApp')
                 return user.github.displayName;
             }
         },
+
+        getFirstName: function(user) {
+            if (typeof user == 'string') {
+                return this.getFirstName(this.getProfile(user));
+            }
+            if (!user) {
+                return '';
+            }
+
+            if (user.facebook && user.facebook.cachedUserProfile) {
+                return user.facebook.cachedUserProfile.first_name;
+            }
+            // if (user.google) {
+            //     return user.google.displayName;
+            // }
+            // if (user.twitter) {
+            //     return user.twitter.displayName;
+            // }
+            // if (user.github) {
+            //     return user.github.displayName;
+            // }
+        },
+
         getUserId: function(user) {
             if (typeof user == 'string') {
                 return user;
@@ -60,6 +86,7 @@ angular.module('himatesApp')
                 return user.$id;
             }
         },
+
         getAvatar: function(user) {
             if (typeof user == 'string') {
                 return this.getAvatar(this.getProfile(user));

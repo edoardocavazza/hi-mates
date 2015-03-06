@@ -1,22 +1,25 @@
 <section ng-controller="EventCtrl" class="event">
   <h2 class="event-title" ng-bind="currentEvent.title"></h2>
   <nav class="event-options">
-    <a href="javascript:void(0)" title="Edit this event" ng-click="editEvent(currentEvent)">Edit</a> - 
-    <a href="javascript:void(0)" title="Remove this event" ng-click="deleteEvent(currentEvent)">Remove</a>
+    <md-button href="javascript:void(0)" title="Edit this event" ng-click="editEvent(currentEvent)">Edit</md-button> - 
+    <md-button class="md-warn" href="javascript:void(0)" title="Remove this event" ng-click="deleteEvent(currentEvent)">Remove</md-button>
   </nav><br />
   <div id="users">
     <h3>Fill your dates</h3>
     <material-content >
+      <div class="user-calendar" hm-calendar="userDates" hm-calendar-disabled="userRejected" hm-calendar-available="currentEvent.availableDates"></div>
       <p>
         <md-checkbox ng-model="userRejected" aria-label="Reject">
           I will not take part
         </md-checkbox>
       </p>
-      <div class="user-calendar" hm-calendar="userDates" hm-calendar-disabled="userRejected" hm-calendar-available="currentEvent.availableDates"></div>
     </material-content>
   </div>
   <div id="view">
     <h3>Overview</h3>
+    <div id="preferences-cals">
+      <div hm-calendar="preferredDays" hm-calendar-disabled="true"></div>
+    </div>
     <p ng-switch="getPreferencesNumber()">
       <span ng-switch-when="0">Nobody has subscribed yet :(</span>
       <span ng-switch-when="1">Just 1 mate has subscribed.</span>
@@ -26,9 +29,6 @@
       <span ng-switch-when="1">1 mate will not take part.</span>
       <span ng-switch-default>{{ getRejectedNumber() }} mates will not take part.</span>
     </p>
-    <div id="preferences-cals">
-      <div hm-calendar="preferredDays" hm-calendar-disabled="true"></div>
-    </div>
   </div>
   <div id="subscriptions" ng-if="currentEvent.dates && currentEvent.dates.length > 0">
     <h3>Subscriptions</h3>

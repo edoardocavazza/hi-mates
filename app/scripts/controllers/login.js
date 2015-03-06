@@ -9,7 +9,7 @@
  */
 angular.module('himatesApp')
   .controller('LoginCtrl', function ($scope, $rootScope, $http, $timeout, $q, $firebase, Auth) {
-    var services = ['facebook', 'google', 'twitter'/*, 'github'*/];
+    var services = ['facebook', 'google', 'twitter', 'github'];
     $scope.authServices = {};
     $scope.loggedService = {};
     

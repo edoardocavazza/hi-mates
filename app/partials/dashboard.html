@@ -1,21 +1,14 @@
-<section class="dashboard">
-	<h2 ng-include="'partials/user-card.html'"></h2>
-	<h3>Events</h3>
-	<div ng-controller="EventsCtrl">
-		<ul class="events-list">
-			<li class="event-entry" ng-repeat="ev in events" ng-click="openEvent(ev)"><span class="event-title">{{ ev.title }}</span></li>
-		</ul>
-		<div ng-if="events.length == 0">
-			<a href="javascript:void(0)" ui-sref="event.create">+ C'mon mates, let's go out!</a>
-		</div>
-	</div>
-	<div ng-controller="GroupsCtrl">
-		<h3>Crews</h3>
-		<ul class="groups-list">
-			<li class="group-entry" ng-repeat="group in groups">{{ group.title }}</li>
-		</ul>
-		<div ng-if="groups.length == 0">
-			+ Why so lonely ?!
-		</div>
-	</div>
-</section>
+<md-progress-circular md-mode="indeterminate" ng-if="loading" style="margin: 48px auto;"></md-progress-circular>
+<div flex layout="column" ng-hide="loading">
+	<md-tabs md-selected="selectedIndex" flex>
+		<md-tab label="Events" ui-sref="event.list">
+			<md-content class="md-padding" ui-view="eventView"></md-content>
+		</md-tab>
+		<md-tab label="Calendar">
+
+		</md-tab>
+		<md-tab label="Crews" ui-sref="group.list">
+			<md-content class="md-padding" ui-view="groupView"></md-content>
+		</md-tab>
+	</md-tabs>
+</div>

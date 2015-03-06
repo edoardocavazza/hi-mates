@@ -23,7 +23,7 @@ angular
   .value('fbURL', 'https://himates.firebaseio.com')
 
   .config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/dashboard');
+    $urlRouterProvider.otherwise('/event/list');
 
     $stateProvider
       .state('dashboard', {
@@ -53,34 +53,82 @@ angular
       })
       .state('event', {
         abstract: true,
-        templateUrl: 'partials/events/event.html',
+        templateUrl: 'partials/dashboard.html',
+        data: {
+          authenticate: true
+        }
+      })
+      .state('event.list', {
+        url: '/event/list',
+        views: {
+          'eventView': {
+            templateUrl: 'partials/events/list.html',
+            controller: 'EventsCtrl'
+          }
+        },
         data: {
           authenticate: true
         }
       })
       .state('event.create', {
         url: '/event/new',
-        templateUrl: 'partials/events/edit.html',
+        views: {
+          'eventView': {
+            templateUrl: 'partials/events/edit.html',
+            controller: 'EventsCtrl'
+          }
+        },
         data: {
           authenticate: true
         }
       })
       .state('event.edit', {
         url: '/event/edit/:eventId',
-        templateUrl: 'partials/events/edit.html',
+        views: {
+          'eventView': {
+            templateUrl: 'partials/events/edit.html',
+            controller: 'EventsCtrl'
+          }
+        },
         data: {
           authenticate: true
         }
       })
       .state('event.view', {
         url: '/event/view/:eventId',
-        templateUrl: 'partials/events/view.html',
+        views: {
+          'eventView': {
+            templateUrl: 'partials/events/view.html',
+            controller: 'EventsCtrl'
+          }
+        },
+        data: {
+          authenticate: true
+        }
+      })
+      .state('group', {
+        abstract: true,
+        templateUrl: 'partials/dashboard.html',
+        data: {
+          authenticate: true
+        }
+      })
+      .state('group.list', {
+        url: '/group/list',
+        views: {
+          'groupView': {
+            templateUrl: 'partials/groups/list.html',
+            controller: 'GroupsCtrl'
+          }
+        },
         data: {
           authenticate: true
         }
       });
   })
   .run(function($rootScope, $location, $state, $timeout, Auth, AppServices) {
+    $(window).scrollTop(0);
+
     var lastPath = null;
     var isPreloadTimeEnded = false;
     var isAuthLoaded = false;
@@ -137,18 +185,6 @@ angular
 
     $rootScope.navigate = function(path) {
       $location.path(path);
-    }
-
-    $rootScope.getRealName = function(user) {
-      return AppServices.getRealName(user || $rootScope.user);
-    }
-
-    $rootScope.getAvatar = function(user) {
-      return AppServices.getAvatar(user || $rootScope.user);
-    }
-
-    $rootScope.getUserId = function(user) {
-      return AppServices.getUserId(user || $rootScope.user);
     }
 
     $rootScope.logout = function() {

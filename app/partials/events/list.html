@@ -1,0 +1,4 @@
+<ul class="events-list">
+	<li class="event-entry" href="javascript:void(0)" ui-sref="event.create"><span class="event-title">Create new</span></li>
+	<li class="event-entry" ng-repeat="ev in events" ng-click="openEvent(ev)"><span class="event-title">{{ ev.title }}</span></li>
+</ul>
