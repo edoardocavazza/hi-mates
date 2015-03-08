@@ -4,14 +4,14 @@
             <md-button ng-disabled="disabled" ng-click="previousMonth()">
                 prev
             </md-button>
-            <md-select ng-if="selectMonth" ng-disabled="disabled" ng-model="currentMonth">
+            <md-select ng-hide="!selectMonth" ng-disabled="disabled" ng-model="currentMonth">
                 <md-option ng-repeat="month in months" value="{{ ::$index }}">{{ ::month }}</md-option>
             </md-select>
-            <strong ng-if="!selectMonth">{{ months[currentMonth] }}</strong>
-            <md-select ng-if="selectYear" ng-disabled="disabled" ng-model="currentYear">
+            <strong ng-hide="!!selectMonth">{{ months[currentMonth] }}</strong>
+            <md-select ng-hide="!selectYear" ng-disabled="disabled" ng-model="currentYear">
                 <md-option ng-repeat="year in years" value="{{ ::year }}">{{ ::year }}</md-option>
             </md-select>
-            <strong ng-if="!selectYear">{{ currentYear }}</strong>
+            <strong ng-hide="!!selectYear">{{ currentYear }}</strong>
             <md-button ng-disabled="disabled" ng-click="nextMonth()">
                 next
             </md-button>

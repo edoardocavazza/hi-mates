@@ -1,11 +1,18 @@
 <md-content ng-controller="EventCtrl">
-	<form md-theme="teal" ng-submit="saveEvent(currentEvent)">
-	  <md-text-float label="Event title" ng-model="currentEvent.title"></md-text-float>
-	  <br />
-	  <label>Available dates</label>
-	  <br />
-	  <div hm-calendar="availableDates" hm-calendar-type="number" style="max-width: 320px; margin-top: 1em;"></div>
-	  <br />
-	  <md-button aria-label="Edit an Event" class="md-primary" md-theme="teal">Save</md-button>
+	<form ng-submit="saveEvent(currentEvent)">
+	  	<md-input-container style="width: 320px">
+	  		<input class="md-primary" label="Event title" ng-model="currentEvent.title"></input>
+	  		<label>Event title:</label>
+		</md-input-container>
+	  	<label>Available dates:</label>
+		<md-date-picker 
+		    ng-model="availableDates"
+		    md-available-dates="preventPast" 
+		    md-select-year="no" 
+		    multiple="multiple" 
+		    style="max-width: 320px; margin-top: 1em;">
+		</md-date-picker>
+	  	<br />
+	  	<md-button aria-label="Edit an Event" class="md-primary">Save</md-button>
 	</form>
 </md-content>

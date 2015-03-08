@@ -21,6 +21,11 @@ h2 {
 	color: #666;
 }
 
+md-content::-webkit-scrollbar    		   { width: 8px; }
+md-content::-webkit-scrollbar-track        { width: 8px; }
+md-content::-webkit-scrollbar-track-piece  { background: #CCC; }
+md-content::-webkit-scrollbar-thumb        { background: #888; }
+
 .login h2 {
 	text-align: center;
 	margin-bottom: 30px;
@@ -66,15 +71,13 @@ body > header {
 	text-align: center;
 	color: #FFF;
 	position: relative;
-	/* IE9 SVG, needs conditional override of 'filter' to 'none' */ /* FF3.6+ */ /* Chrome,Safari4+ */ /* Chrome10+,Safari5.1+ */ /* Opera 11.10+ */ /* IE10+ */ /* W3C */ /* IE6-8 fallback on horizontal gradient */
 	background-color: #E91E63;
-	transition: min-height 500ms ease-out;
-	-webkit-transition: min-height 500ms ease-out;
 }
 
 body > header:before {
 	content: '';
 	background-image: url('../images/header.png');
+	background-size: 175px 75px;
 	background-position: center 0px;
 	background-repeat: no-repeat;
 	position: absolute;
@@ -245,7 +248,7 @@ body {
 	text-align: right;
 }
 
-.event .md-date-picker {
+.md-date-picker {
 	background-color: #e5e5e5;
 }
 
@@ -262,7 +265,7 @@ body {
 	display: inline-block;
 	vertical-align: top;
 	text-align: center;
-	color: rgb(0, 129, 255);
+	color: rgb(63, 81, 181);
 	width: 70px;
 }
 
@@ -407,11 +410,12 @@ md-checkbox .md-label {
 
 .wrapper.position-centered {
 	width: 90%;
-	height: 90%;
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 10%;
+	top: 80px;
+	bottom: 0;
+	margin: auto;
 }
 
 md-tabs {
@@ -470,11 +474,14 @@ md-tabs .md-tab-content {
 	bottom: -1px;
 	z-index: 1;
 	border-radius: 2px;
-	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzAwOTY4OCIgc3RvcC1vcGFjaXR5PSIwLjciLz4KICAgIDxzdG9wIG9mZnNldD0iNTElIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==); /* FF3.6+ */ /* Chrome,Safari4+ */ /* Chrome10+,Safari5.1+ */ /* Opera 11.10+ */ /* IE10+ */
-	background: linear-gradient(135deg,  rgba(0,150,136,0.7) 50%,rgba(255,255,255,1) 51%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3009688', endColorstr='#ffffff',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
-
+	background: #3f51b5; /* Old browsers */
+	background: -moz-linear-gradient(-45deg,  #3f51b5 49%, #ffffff 50%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(49%,#3f51b5), color-stop(50%,#ffffff)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg,  #3f51b5 49%,#ffffff 50%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(-45deg,  #3f51b5 49%,#ffffff 50%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(-45deg,  #3f51b5 49%,#ffffff 50%); /* IE10+ */
+	background: linear-gradient(135deg,  #3f51b5 49%,#ffffff 50%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3f51b5', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .event-entry .event-title {
@@ -482,7 +489,7 @@ md-tabs .md-tab-content {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	background: rgba(0, 150, 136, 0.7);
+	background: rgba(63, 81, 181, 0.7);
 	line-height: 1.3em;
 	padding: 5px;
 	color: #FFF;

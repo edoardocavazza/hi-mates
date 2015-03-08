@@ -129,7 +129,7 @@ angular.module('himatesApp')
                             }
                             return false;
                         } else if (angular.isFunction(validDates)) {
-                            validDates.call(selectedDate, selectedDate);
+                            return validDates.call(selectedDate, selectedDate);
                         } else {
                             return true;
                         }

@@ -20,7 +20,7 @@
     </md-date-picker>
   </div>
   <div id="view">
-    <div id="subscriptions" ng-if="currentEvent.dates && currentEvent.dates.length > 0">
+    <div id="subscriptions">
       <h3>Subscriptions</h3>
       <p ng-switch="getEventSubscriptionsLength()">
         <span ng-switch-when="0">Nobody has subscribed yet :(</span>
@@ -31,7 +31,7 @@
         <span ng-switch-when="1">1 mate will not take part.</span>
         <span ng-switch-default>{{ getRejectedNumber() }} mates will not take part.</span>
       </p>
-      <nav class="filters">
+      <nav class="filters" ng-if="getEventSubscriptionsLength() > 0">
         <span>Order by: </span>
         <a href="javascript:void(0)" ng-class="{ 'on': filter == 'date' }" ng-click="setFilter('date')">date</a> / 
         <a href="javascript:void(0)" ng-class="{ 'on': filter == 'day' }" ng-click="setFilter('day')">best day</a>

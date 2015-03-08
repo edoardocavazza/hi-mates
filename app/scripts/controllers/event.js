@@ -16,6 +16,10 @@ angular.module('himatesApp')
     $scope.preferredDays = [];
     $scope.filter = 'date';
 
+    $scope.preventPast = function(day) {
+      return day.valueOf() >= Date.now();
+    }
+
     $scope.setFilter = function(f) {
       $scope.filter = f;
     }
