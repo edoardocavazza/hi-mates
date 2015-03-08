@@ -6,44 +6,48 @@
   </nav><br />
   <div id="users">
     <h3>Fill your dates</h3>
-    <material-content >
-      <div class="user-calendar" hm-calendar="userDates" hm-calendar-disabled="userRejected" hm-calendar-available="currentEvent.availableDates"></div>
-      <p>
-        <md-checkbox ng-model="userRejected" aria-label="Reject">
-          I will not take part
-        </md-checkbox>
-      </p>
-    </material-content>
+    <p>
+      <md-checkbox ng-model="userRejected" aria-label="Reject">
+        I will not take part
+      </md-checkbox>
+    </p>
+    <md-date-picker 
+      ng-model="userDates"
+      ng-disabled="hasUserRejected()"
+      md-available-dates="currentEvent.availableDates" 
+      md-select-year="no" 
+      multiple="multiple" >
+    </md-date-picker>
   </div>
   <div id="view">
-    <h3>Overview</h3>
-    <div id="preferences-cals">
-      <div hm-calendar="preferredDays" hm-calendar-disabled="true"></div>
+    <div id="subscriptions" ng-if="currentEvent.dates && currentEvent.dates.length > 0">
+      <h3>Subscriptions</h3>
+      <p ng-switch="getEventSubscriptionsLength()">
+        <span ng-switch-when="0">Nobody has subscribed yet :(</span>
+        <span ng-switch-when="1">Just 1 mate has subscribed.</span>
+        <span ng-switch-default>{{ getEventSubscriptionsLength() }} mates have subscribed.</span>
+      </p>
+      <p ng-if="getEventRejectionsLength() > 0" ng-switch="getEventRejectionsLength()">
+        <span ng-switch-when="1">1 mate will not take part.</span>
+        <span ng-switch-default>{{ getRejectedNumber() }} mates will not take part.</span>
+      </p>
+      <nav class="filters">
+        <span>Order by: </span>
+        <a href="javascript:void(0)" ng-class="{ 'on': filter == 'date' }" ng-click="setFilter('date')">date</a> / 
+        <a href="javascript:void(0)" ng-class="{ 'on': filter == 'day' }" ng-click="setFilter('day')">best day</a>
+      </nav>
+      <ul class="no-list">
+        <li class="per-date" ng-repeat="d in getSubscriptionsByDate() | orderFilter:filter" layout="row">
+          <h4 class="date" data-number="{{ d.users.length }}" flex="20">
+            <span class="date-day-week">{{ d.date | date:'EEEE' }}</span>
+            <span class="date-day">{{ d.date | date:'d' }}</span>
+            <span class="date-month">{{ d.date | date:'MMMM' }}</span>
+          </h4>
+          <ul class="no-list" flex="80" style="display: inline-block">
+            <li ng-repeat="userData in d.users" class="anim-zoomIn user-list-entry" ng-init="user = userData" ng-include="'partials/user-card.html'"></li>
+          </ul>
+        </li>
+      </ul>
     </div>
-    <p ng-switch="getPreferencesNumber()">
-      <span ng-switch-when="0">Nobody has subscribed yet :(</span>
-      <span ng-switch-when="1">Just 1 mate has subscribed.</span>
-      <span ng-switch-default>{{ getPreferencesNumber() }} mates have subscribed.</span>
-    </p>
-    <p ng-if="getRejectedNumber() > 0" ng-switch="getRejectedNumber()">
-      <span ng-switch-when="1">1 mate will not take part.</span>
-      <span ng-switch-default>{{ getRejectedNumber() }} mates will not take part.</span>
-    </p>
-  </div>
-  <div id="subscriptions" ng-if="currentEvent.dates && currentEvent.dates.length > 0">
-    <h3>Subscriptions</h3>
-    <nav class="filters">
-      <span>Order by: </span>
-      <a href="javascript:void(0)" ng-class="{ 'on': filter == 'date' }" ng-click="setFilter('date')">date</a> / 
-      <a href="javascript:void(0)" ng-class="{ 'on': filter == 'day' }" ng-click="setFilter('day')">best day</a>
-    </nav>
-    <ul class="no-list">
-      <li class="per-date" ng-repeat="d in eventDatesAlias | orderFilter:filter">
-        <h4 class="date" data-number="{{ d.users.length }}">{{ d.date }}</h4>
-        <ul class="no-list">
-          <li ng-repeat="userData in d.users" class="anim-zoomIn user-list-entry" ng-init="user = userData" ng-include="'partials/user-card.html'"></li>
-        </ul>
-      </li>
-    </ul>
   </div>
 </section>

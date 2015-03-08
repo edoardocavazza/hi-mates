@@ -1,0 +1,39 @@
+<div class="md-date-picker">
+    <div class="md-date-picker-widget">
+        <div class="md-date-picker-nav" ng-style="mdColors.getStyle('primary')">
+            <md-button ng-disabled="disabled" ng-click="previousMonth()">
+                prev
+            </md-button>
+            <md-select ng-if="selectMonth" ng-disabled="disabled" ng-model="currentMonth">
+                <md-option ng-repeat="month in months" value="{{ ::$index }}">{{ ::month }}</md-option>
+            </md-select>
+            <strong ng-if="!selectMonth">{{ months[currentMonth] }}</strong>
+            <md-select ng-if="selectYear" ng-disabled="disabled" ng-model="currentYear">
+                <md-option ng-repeat="year in years" value="{{ ::year }}">{{ ::year }}</md-option>
+            </md-select>
+            <strong ng-if="!selectYear">{{ currentYear }}</strong>
+            <md-button ng-disabled="disabled" ng-click="nextMonth()">
+                next
+            </md-button>
+        </div>
+
+        <div class="md-date-picker-days-of-week" ng-style="mdColors.getStyle('primary')">
+            <span ng-repeat="day in daysOfWeek">{{ day }}</span>
+        </div>
+
+        <div class="md-date-picker-days">
+            <span class="md-date-picker-day md-date-picker-day-empty"
+                  ng-repeat="x in emptyFirstDays">&nbsp;</span><!--
+
+         --><div class="md-date-picker-day"
+                 ng-repeat="day in days">
+                <md-button ng-click="select(day)" ng-disabled="disabled || !isDateValid(day)" ng-class="{ 
+                    'md-accent md-raised': isDateSelected(day)
+                }">{{ day ? day.format('D') : '' }}</md-button>
+            </div><!--
+
+         --><span class="md-date-picker-day md-date-picker-day-empty"
+                  ng-repeat="x in emptyLastDays">&nbsp;</span>
+        </div>
+    </div>
+</div>

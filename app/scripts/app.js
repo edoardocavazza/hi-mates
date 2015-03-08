@@ -17,7 +17,8 @@ angular
     'ngTouch',
     'ngMaterial',
     'ui.router',
-    'firebase'
+    'firebase',
+    'chArrayHandler'
   ])
 
   .value('fbURL', 'https://himates.firebaseio.com')
@@ -126,6 +127,7 @@ angular
         }
       });
   })
+
   .run(function($rootScope, $location, $state, $timeout, Auth, AppServices) {
     $(window).scrollTop(0);
 

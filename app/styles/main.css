@@ -235,13 +235,64 @@ body {
 	overflow: auto;
 }
 
+.event p {
+	margin: 0 0 1rem 0;
+}
+
+.event .filters {
+	font-size: 0.75rem;
+	width: 100%;
+	text-align: right;
+}
+
+.event .md-date-picker {
+	background-color: #e5e5e5;
+}
+
+.event h3 {
+	margin-top: 0;
+}
+
+.event .avatar-crop {
+	width: 40px;
+	height: 40px;
+}
+
+.event .date {
+	display: inline-block;
+	vertical-align: top;
+	text-align: center;
+	color: rgb(0, 129, 255);
+	width: 70px;
+}
+
+.event .date > span {
+	display: inline-block;
+	text-align: left;
+	width: 100%;
+	text-transform: uppercase;
+	font-size: 0.6rem;
+	line-height: 1rem;
+}
+
+.event .date .date-day {
+	font-size: 2rem;
+	line-height: 1.6rem;
+}
+
+.event md-checkbox {
+	margin: 0;
+}
+
 .event-title {
 	display: inline-block;
+	margin-top:  0;
 }
 
 .event-options {
 	font-size: 0.8em;
 	text-transform: lowercase;
+	display: inline-block;
 }
 
 footer {
@@ -444,8 +495,12 @@ md-tabs .md-tab-content {
 #view, #users {
 	display: inline-block;
 	vertical-align: top;
-	width: 66%;
 	margin-right: 0;
+}
+
+#view {
+	width: 60%;
+	float: right;
 }
 
 #users {
@@ -454,7 +509,7 @@ md-tabs .md-tab-content {
 }
 
 #subscriptions .user-card {
-	margin-top: 10px;
+	margin: 4px 8px 8px;
 	display: inline-block;
 	position: relative;
 }
@@ -564,11 +619,13 @@ h2 > .avatar-crop {
 	font-weight: bold;
 	display: inline-block;
 	margin: 0;
+	position: relative;
 }
 
 .date:after {
+	color: #000;
 	content: attr(data-number);
-	display: inline-block;
+	display: none;
 	min-width: 20px;
 	padding: 0 4px;
 	height: 20px;
@@ -577,12 +634,15 @@ h2 > .avatar-crop {
 	border-radius: 4px;
 	margin-left: 10px;
 	font-weight: normal;
+	position: absolute;
+	top:  0;
 }
 
 .per-date {
-	width: 33%;
+	width: 100%;
 	display: inline-block;
-	padding: 30px 10px;
+	padding: 8px 0;
+	border-bottom: solid 1px #e5e5e5;
 }
 
 .user-card {
