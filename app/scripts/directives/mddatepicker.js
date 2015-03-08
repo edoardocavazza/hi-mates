@@ -56,7 +56,9 @@ angular.module('himatesApp')
             restrict: 'AE',
             scope: {
                 'ngDisabled': '=ngDisabled',
-                'availableDates': '=mdAvailableDates'
+                'availableDates': '=mdAvailableDates',
+                'minDate': '=mdMinDate',
+                'maxDate': '=mdMaxDate'
             },
             templateUrl: 'partials/components/date-picker.html',
             link: function(scope, element, attrs, ngModel) {
@@ -116,6 +118,16 @@ angular.module('himatesApp')
                     updateCalendar();
                 };
 
+                scope.preventPrevButton = function() {
+                    var d = moment(scope.activeDate).subtract(1, 'month');
+                    return !checkMinDate(d.toDate());
+                }
+
+                scope.preventNextButton = function() {
+                    var d = moment(scope.activeDate).add(1, 'month');
+                    return !checkMaxDate(d.toDate());
+                }
+
                 scope.isDateValid = function(day) {
                     var selectedDate = day.toDate();
                     if (validDates) {
@@ -123,19 +135,29 @@ angular.module('himatesApp')
                             var dates = validDates;
                             for (var i = 0; i < dates.length; i++) {
                                 var d = new Date(dates[i]);
-                                if (isSameDay(d, selectedDate)) {
+                                if (isSameDay(d, selectedDate) && checkMinDate(selectedDate) && checkMaxDate(selectedDate)) {
                                     return true;
                                 }
                             }
                             return false;
                         } else if (angular.isFunction(validDates)) {
-                            return validDates.call(selectedDate, selectedDate);
+                            return validDates.call(selectedDate, selectedDate) && checkMinDate(selectedDate) && checkMaxDate(selectedDate);
                         } else {
-                            return true;
+                            return checkMinDate(selectedDate) && checkMaxDate(selectedDate);
                         }
                     } else {
-                        return false;
+                        return checkMinDate(selectedDate) && checkMaxDate(selectedDate);
                     }
+                }
+
+                scope.isValidMonth = function(month, year) {
+                    var d = moment();
+                    d.month(month).year(year);
+                    var first = moment(d);
+                    first.date(1);
+                    var last = moment(d);
+                    last.endOf('month');
+                    return checkMinDate(last) && checkMaxDate(first);
                 }
 
                 attrs.$observe('locale', function() {
@@ -182,6 +204,30 @@ angular.module('himatesApp')
                     setValidDates(val);
                 });
 
+                scope.$watch('minDate', function(val) {
+                    setMinDate(val);
+                });
+
+                scope.$watch('maxDate', function(val) {
+                    setMaxDate(val);
+                });
+
+                scope.$watch(function() {
+                    return scope.activeDate.toDate().valueOf();
+                }, function(val) {
+                    scope.currentYear = moment(scope.activeDate || new Date()).year();
+                    scope.currentMonth = moment(scope.activeDate || new Date()).month();
+                    updateCalendar();
+                });
+
+                scope.$watch('currentYear', function(val) {
+                    scope.activeDate.year(parseInt(val));
+                });
+
+                scope.$watch('currentMonth', function(val) {
+                    scope.activeDate.month(parseInt(val));
+                });
+
                 var isSameDay = function(d1, d2) {
                     return moment(d1).format('YYYY/M/D') === moment(d2).format('YYYY/M/D');
                 }
@@ -196,14 +242,18 @@ angular.module('himatesApp')
                             scope.activeDate = moment(ngModel.$viewValue);
                         } else if (angular.isArray(ngModel.$viewValue) && ngModel.$viewValue.length > 0) {
                             scope.activeDate = moment(ngModel.$viewValue[0]);
+                        } else if (validDates && angular.isArray(validDates)) {
+                            if (scope.isDateValid(moment())) {
+                                scope.activeDate = moment();    
+                            } else {
+                                scope.activeDate = moment(validDates[0]);
+                            }
                         } else {
                             scope.activeDate = moment();
                         }
                     } else {
                         scope.activeDate = moment();
                     }
-
-                    scope.moment = moment;
 
                     scope.selectYear = options.selectYear;
                     scope.selectMonth = options.selectMonth;
@@ -221,18 +271,44 @@ angular.module('himatesApp')
                         scope.years.push(y);
                     }
 
-                    scope.$watch(function() {
-                        return scope.activeDate.toDate().valueOf();
-                    }, function(val) {
-                        scope.currentYear = moment(scope.activeDate || new Date()).year();
-                        scope.currentMonth = moment(scope.activeDate || new Date()).month();
-                    });
-
                     updateCalendar();
                 };
 
                 var setValidDates = function(values) {
                     validDates = values;
+                    update();
+                }
+
+                var checkMinDate = function() {
+                    return true;
+                }
+
+                var checkMaxDate = function() {
+                    return true;
+                }
+
+                var setMinDate = function(val) {
+                    if (angular.isDate(val)) {
+                        checkMinDate = function(day) {
+                            return day > val;
+                        }
+                    } else {
+                        checkMinDate = function() {
+                            return true;
+                        }
+                    }
+                }
+
+                var setMaxDate = function(val) {
+                    if (angular.isDate(val)) {
+                        checkMaxDate = function(day) {
+                            return day <= val;
+                        }
+                    } else {
+                        checkMaxDate = function() {
+                            return true;
+                        }
+                    }
                 }
 
                 var disable = function() {
@@ -243,7 +319,7 @@ angular.module('himatesApp')
                     scope.disabled = false;
                 }
 
-                function updateCalendar() {
+                var updateCalendar = function() {
                     var days = [],
                         previousDay = angular.copy(scope.activeDate).date(0),
                         firstDayOfMonth = angular.copy(scope.activeDate).date(1),
@@ -270,7 +346,7 @@ angular.module('himatesApp')
                     scope.days = days;
                 }
 
-                function checkLocale(locale) {
+                var checkLocale = function(locale) {
                     if (!locale) {
                         return (navigator.language !== null ? navigator.language : navigator.browserLanguage).split("_")[0].split("-")[0] || 'en';
                     }

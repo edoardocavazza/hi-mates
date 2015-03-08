@@ -1,18 +1,18 @@
 <div class="md-date-picker">
     <div class="md-date-picker-widget">
         <div class="md-date-picker-nav" ng-style="mdColors.getStyle('primary')">
-            <md-button ng-disabled="disabled" ng-click="previousMonth()">
+            <md-button ng-disabled="disabled || preventPrevButton()" ng-click="$event.stopPropagation(); $event.preventDefault(); previousMonth()">
                 prev
             </md-button>
             <md-select ng-hide="!selectMonth" ng-disabled="disabled" ng-model="currentMonth">
-                <md-option ng-repeat="month in months" value="{{ ::$index }}">{{ ::month }}</md-option>
+                <md-option ng-if="isValidMonth($index, $currentYear)" ng-repeat="month in months" value="{{ ::$index }}">{{ ::month }}</md-option>
             </md-select>
             <strong ng-hide="!!selectMonth">{{ months[currentMonth] }}</strong>
             <md-select ng-hide="!selectYear" ng-disabled="disabled" ng-model="currentYear">
                 <md-option ng-repeat="year in years" value="{{ ::year }}">{{ ::year }}</md-option>
             </md-select>
             <strong ng-hide="!!selectYear">{{ currentYear }}</strong>
-            <md-button ng-disabled="disabled" ng-click="nextMonth()">
+            <md-button ng-disabled="disabled || preventNextButton()" ng-click="$event.stopPropagation(); $event.preventDefault(); nextMonth()">
                 next
             </md-button>
         </div>

@@ -16,6 +16,9 @@ angular.module('himatesApp')
     $scope.preferredDays = [];
     $scope.filter = 'date';
 
+    $scope.minDate = new Date();
+    $scope.maxDate = null;
+
     $scope.preventPast = function(day) {
       return day.valueOf() >= Date.now();
     }
@@ -102,115 +105,33 @@ angular.module('himatesApp')
             }
             EventHandler.setUserSubscriptions($scope.currentEvent, user, newUserSubs);
           }
-          //console.log('on change:', angular.copy($scope.currentEvent.dates), ($scope.currentEvent.dates || []).length);
-          // if ($scope.currentEvent && $scope.currentEvent.dates) {
-          //   var deleted = 0;
-          //   var length = $scope.currentEvent.dates.length
-          //   for (var k = 0; k < length; k++) {
-          //     var d = new Date($scope.currentEvent.dates[k - deleted].timestamp);
-          //     var userIndexOf = indexOfDatesArray(d, dates);
-          //     if (userIndexOf == -1) {
-          //       //user removed this date
-          //       var users = $scope.currentEvent.dates[k - deleted].users;
-          //       var index = users.indexOf(user.$id);
-          //       if (index >= 0) {
-          //         if (users.length > 1) {
-          //           $scope.currentEvent.dates[k - deleted].users.splice(index, 1);
-          //         } else {
-          //           $scope.currentEvent.dates.splice(k - deleted, 1);
-          //           deleted += 1;
-          //         }
-          //       }
-          //     } else {
-          //       dates.splice(userIndexOf, 1);
-          //       var users = $scope.currentEvent.dates[k - deleted].users;
-          //       if (users.indexOf(user.$id) == -1) {
-          //         $scope.currentEvent.dates[k - deleted].users.push(user.$id);
-          //       }
-          //     }
-          //   }
-          // }
-          // //console.log('removed:', angular.copy($scope.currentEvent.dates), ($scope.currentEvent.dates || []).length);
-          // //console.log('try to add:', angular.copy(dates));
-          // if (dates.length > 0) {
-          //   for (var z = 0; z < dates.length; z++) {
-          //     $scope.currentEvent.dates = $scope.currentEvent.dates || [];
-          //     var d = dates[z];
-          //     var indexOf = indexOfDatesArray(d, $scope.currentEvent.dates);
-          //     if (indexOf == -1) {
-          //       var str = valToDate(d.valueOf());
-          //       $scope.currentEvent.dates.push({
-          //         date: str,
-          //         timestamp: d.valueOf(),
-          //         users: [user.$id]
-          //       });
-          //     }
-          //   }
-          // }
-          //console.log('before save:', angular.copy($scope.currentEvent.dates), ($scope.currentEvent.dates || []).length);
           $scope.currentEvent.$save();
         }
       }, true);
     }
 
-    var updateCalendar = function() {
-      /*var dates = $scope.currentEvent.dates;
+    $scope.availableDatesFilter = function(day) {
+      var dates = $scope.currentEvent.availableDates;
       if (dates) {
-        var box = {};
-        for (var k = 0; k < dates.length; k++) {
-          var d = dates[k].timestamp;
-          box[d] = dates[k];
-        }
-        var deleted = 0;
-        for (var k = 0; k < $scope.eventDatesAlias.length; k++) {
-          var index = k - deleted;
-          var time = $scope.eventDatesAlias[index].timestamp;
-          if (!box[time]) {
-            $scope.eventDatesAlias.splice(index, 1);
-            deleted += 1;
-          } else {
-            $scope.eventDatesAlias[index]['users'] = box[time].users;
-            delete box[time];
+        for (var i = 0; i < dates.length; i++) {
+          if (moment(dates[i]).format('YYYY/M/D') === moment(day).format('YYYY/M/D') && day.valueOf() >= Date.now()) {
+            return true;
           }
         }
-        for (var k in box) {
-          $scope.eventDatesAlias.push(box[k]);
-        }
-
-        var ar = [];
-        var max = 0;
-        var rejected = $scope.currentEvent.rejected || [];
-        for (var k = 0; k < dates.length; k++) {
-          var d = dates[k];
-          if (d.users) {
-            var usersAvailable = [];
-            for (var j = 0; j < d.users.length; j++) {
-              var uid = d.users[j];
-              if (rejected.indexOf(uid) == -1) {
-                usersAvailable.push(d.users[j]);
-              }
-            }
-            if (usersAvailable.length > max) {
-              max = usersAvailable.length;
-              ar = [];
-            }
-            if (max == usersAvailable.length) {
-              ar.push(new Date(dates[k].timestamp));
-            }
-          }
-        }
-        $scope.preferredDays = ar;
-      } else {
-        $scope.eventDatesAlias = [];
-        $scope.preferredDays = [];
-      }*/
+      }
+      return false;
     }
 
     $scope.$watch('availableDates', function(val) {
       var res = [];
-      for (var k = 0; k < val.length; k++) {
-        res.push(val[k].valueOf());
-      } 
+      if (val && val.length > 0) {
+        for (var k = 0; k < val.length; k++) {
+          res.push(val[k].valueOf());
+          $scope.maxDate = val[k];
+        }
+      } else {
+        $scope.maxDate = null;
+      }
       $scope.currentEvent.availableDates = res;
     }, true);
 
@@ -228,8 +149,6 @@ angular.module('himatesApp')
         $scope.userDates = EventHandler.getUserSubscriptionDates($scope.currentEvent, Auth.getUser());
         startWatchUserDates();
         startWatchUserRejected();
-        updateCalendar();
-        //$scope.currentEvent.$watch(updateCalendarDigest);
       });
     }
 

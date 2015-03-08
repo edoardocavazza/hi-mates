@@ -27,9 +27,7 @@ angular.module('himatesApp')
             var res = [];
             var now = Date.now();
             for (var i = 0; i < dates.length; i++) {
-                if (dates[i] >= now) {
-                    res.push(dates[i]);
-                }
+                res.push(new Date(dates[i]));
             }
             return res;
         },
@@ -45,13 +43,16 @@ angular.module('himatesApp')
                 var subs = subscriptions[k];
                 for (var i = 0; i < subs.length; i++) {
                     var m = subs[i];
-                    var index = new Date(m.date).valueOf();
-                    byDate[index] = byDate[index] || {
-                        time: index,
-                        date: new Date(m.date),
-                        users: []
-                    };
-                    byDate[index].users.push(k);
+                    var d = new Date(m.date);
+                    if (this.isValidDate(d)) {
+                    var index = d.valueOf();
+                        byDate[index] = byDate[index] || {
+                            time: index,
+                            date: new Date(m.date),
+                            users: []
+                        };
+                        byDate[index].users.push(k);
+                    }
                 }
             }
             var res = [];
@@ -75,7 +76,10 @@ angular.module('himatesApp')
             var res = [];
             if (subscriptions && subscriptions.length > 0) {
                 for (var i = 0; i < subscriptions.length; i++) {
-                    res.push(new Date(subscriptions[i].date));
+                    var d = new Date(subscriptions[i].date);
+                    if (this.isValidDate(d)) {
+                        res.push(d);
+                    }
                 }
             }
             return res;
@@ -92,8 +96,22 @@ angular.module('himatesApp')
         getEventSubscriptionsLength: function(ev) {
             var n = 0;
             var subscriptions = this.getEventSubscriptions(ev);
-            for (var k in subscriptions) n++;
+            for (var k in subscriptions) if (this.hasValidDates(subscriptions[k])) n++;
             return n;
+        },
+
+        hasValidDates: function(subscriptions) {
+            for (var i = 0; i < subscriptions.length; i++) {
+                var d = new Date(subscriptions[i]);
+                if (this.isValidDate(d)) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+        isValidDate: function(d) {
+            return d > new Date();
         },
 
         getEventRejectionsLength: function(ev) {

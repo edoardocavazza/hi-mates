@@ -14,8 +14,10 @@
     <md-date-picker 
       ng-model="userDates"
       ng-disabled="hasUserRejected()"
-      md-available-dates="currentEvent.availableDates" 
+      md-available-dates="availableDatesFilter" 
       md-select-year="no" 
+      md-min-date="minDate"
+      md-max-date="maxDate"
       multiple="multiple" >
     </md-date-picker>
   </div>
